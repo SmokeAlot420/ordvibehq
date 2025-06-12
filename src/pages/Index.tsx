@@ -1,10 +1,7 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+  return <div className="min-h-screen bg-black text-white overflow-hidden relative">
       {/* Navigation */}
       <nav className="flex items-center justify-between px-8 py-6 relative z-20">
         <div className="flex items-center space-x-2">
@@ -28,10 +25,11 @@ const Index = () => {
 
       {/* Spline 3D Background */}
       <div className="absolute inset-0 z-0">
-        <spline-viewer 
-          url="https://prod.spline.design/dYsR51OTIcSHoMC5/scene.splinecode"
-          style={{ width: "100%", height: "100%", display: "block" }}
-        ></spline-viewer>
+        <spline-viewer url="https://prod.spline.design/dYsR51OTIcSHoMC5/scene.splinecode" style={{
+        width: "100%",
+        height: "100%",
+        display: "block"
+      }}></spline-viewer>
       </div>
 
       {/* Dark overlay for better text readability */}
@@ -54,7 +52,7 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Button className="bg-white text-black hover:bg-gray-200 transition-all duration-300 px-10 py-4 text-xl font-semibold group">
+            <Button className="bg-white text-black hover:bg-gray-200 transition-all duration-300 px-10 py-4 text-xl font-semibold group rounded-3xl">
               Start now
               <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -74,8 +72,6 @@ const Index = () => {
           <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-amber-300/50 rounded-full animate-pulse delay-500"></div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
