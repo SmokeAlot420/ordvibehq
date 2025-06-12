@@ -57,7 +57,7 @@ const Index = () => {
               <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Button>
             
-            <Button variant="ghost" className="text-white border-2 border-gray-600 hover:border-white hover:bg-white/10 transition-all duration-300 px-10 py-4 text-xl group">
+            <Button variant="ghost" className="text-white border-2 border-gray-600 hover:border-white hover:bg-white/10 transition-all duration-300 px-10 py-4 text-xl group rounded-full">
               <Play className="mr-3 w-6 h-6 group-hover:scale-110 transition-transform" />
               Watch demo
             </Button>
