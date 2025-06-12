@@ -18,7 +18,7 @@ const Index = () => {
           <a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a>
         </div>
         
-        <Button className="bg-white text-black hover:bg-gray-200 transition-colors">
+        <Button className="bg-white text-black hover:bg-gray-200 transition-colors rounded-full">
           Start trial
         </Button>
       </nav>
