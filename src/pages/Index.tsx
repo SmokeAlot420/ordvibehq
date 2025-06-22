@@ -39,7 +39,7 @@ const Index = () => {
       <div className="relative min-h-screen flex items-center justify-center px-8 z-10">
         <div className="max-w-4xl text-center">
           <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-            Let <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600">FANCY</span>
+            Let <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600">Bitcoin</span>
             <br />
             make concept
             <br />
