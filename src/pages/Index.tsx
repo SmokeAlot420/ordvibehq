@@ -1,7 +1,26 @@
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
+
 const Index = () => {
-  return <div className="min-h-screen bg-black text-white overflow-hidden relative">
+  return (
+    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+      {/* CSS to hide Spline watermark */}
+      <style>{`
+        spline-viewer::part(logo) {
+          display: none !important;
+        }
+        spline-viewer .spline-watermark {
+          display: none !important;
+        }
+        spline-viewer [data-testid="spline-logo"] {
+          display: none !important;
+        }
+        spline-viewer .logo {
+          display: none !important;
+        }
+      `}</style>
+
       {/* Navigation */}
       <nav className="flex items-center justify-between px-8 py-6 relative z-20">
         <div className="flex items-center space-x-2">
@@ -72,6 +91,15 @@ const Index = () => {
           <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-amber-300/50 rounded-full animate-pulse delay-500"></div>
         </div>
       </div>
-    </div>;
+
+      {/* Attribution */}
+      <div className="absolute bottom-4 right-4 z-20">
+        <p className="text-gray-400 text-sm opacity-60">
+          being experimented on by SmokeAlot420
+        </p>
+      </div>
+    </div>
+  );
 };
+
 export default Index;
