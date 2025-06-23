@@ -27,6 +27,25 @@ const Index = () => {
         spline-viewer .logo {
           display: none !important;
         }
+        spline-viewer::part(default-ui) {
+          display: none !important;
+        }
+        spline-viewer .watermark {
+          display: none !important;
+        }
+        spline-viewer [class*="watermark"] {
+          display: none !important;
+        }
+        spline-viewer [class*="logo"] {
+          display: none !important;
+        }
+        spline-viewer [class*="spline"] {
+          display: none !important;
+        }
+        /* Hide any bottom right elements */
+        spline-viewer > div:last-child {
+          display: none !important;
+        }
       `}</style>
 
       {/* Spline 3D Background */}
@@ -45,13 +64,9 @@ const Index = () => {
       <div className="relative min-h-screen flex flex-col items-center justify-center px-8 z-10">
         <div className="max-w-4xl text-center mb-16">
           {/* Main mysterious line */}
-          <h1 className="text-7xl md:text-9xl font-black mb-8 leading-tight tracking-tighter">
+          <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight tracking-tighter">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500">
-              CH₄
-            </span>
-            <br />
-            <span className="text-white/90 text-5xl md:text-7xl font-light">
-              ignites
+              OrdVibeHQ
             </span>
           </h1>
 
