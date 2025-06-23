@@ -1,8 +1,16 @@
-
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 const Index = () => {
+  const [wallet, setWallet] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle wallet submission
+    console.log("Wallet submitted:", wallet);
+  };
+
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
       {/* CSS to hide Spline watermark */}
@@ -21,27 +29,6 @@ const Index = () => {
         }
       `}</style>
 
-      {/* Navigation */}
-      <nav className="flex items-center justify-between px-8 py-6 relative z-20">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-            <span className="text-black font-bold text-sm">F</span>
-          </div>
-          <span className="text-white font-semibold text-lg">FANCY</span>
-        </div>
-        
-        <div className="hidden md:flex items-center space-x-8">
-          <a href="#" className="text-gray-300 hover:text-white transition-colors">Products</a>
-          <a href="#" className="text-gray-300 hover:text-white transition-colors">Solutions</a>
-          <a href="#" className="text-gray-300 hover:text-white transition-colors">Enterprise</a>
-          <a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a>
-        </div>
-        
-        <Button className="bg-white text-black hover:bg-gray-200 transition-colors rounded-full">
-          Start trial
-        </Button>
-      </nav>
-
       {/* Spline 3D Background */}
       <div className="absolute inset-0 z-0">
         <spline-viewer url="https://prod.spline.design/dYsR51OTIcSHoMC5/scene.splinecode" style={{
@@ -51,52 +38,54 @@ const Index = () => {
       }}></spline-viewer>
       </div>
 
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/40 z-5"></div>
+      {/* Subtle dark overlay */}
+      <div className="absolute inset-0 bg-black/30 z-5"></div>
 
       {/* Hero Content */}
-      <div className="relative min-h-screen flex items-center justify-center px-8 z-10">
-        <div className="max-w-4xl text-center">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-            Let <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600">Bitcoin</span>
+      <div className="relative min-h-screen flex flex-col items-center justify-center px-8 z-10">
+        <div className="max-w-4xl text-center mb-16">
+          {/* Main mysterious line */}
+          <h1 className="text-7xl md:text-9xl font-black mb-8 leading-tight tracking-tighter">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500">
+              CH₄
+            </span>
             <br />
-            make concept
-            <br />
-            for you
+            <span className="text-white/90 text-5xl md:text-7xl font-light">
+              ignites
+            </span>
           </h1>
-          
-          <p className="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed">
-            The most advanced AI-powered design tool to create stunning concepts in minutes. 
-            Transform your ideas into reality with our intelligent design system.
+
+          {/* Subtle hint */}
+          <p className="text-xl md:text-2xl text-gray-400 font-mono tracking-wide">
+            alkanes.experiment( )
           </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Button className="bg-white text-black hover:bg-gray-200 transition-all duration-300 px-10 py-4 text-xl font-semibold group rounded-3xl">
-              Start now
-              <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            
-            <Button variant="ghost" className="text-white border-2 border-gray-600 hover:border-white hover:bg-white/10 transition-all duration-300 px-10 py-4 text-xl group rounded-full">
-              <Play className="mr-3 w-6 h-6 group-hover:scale-110 transition-transform" />
-              Watch demo
+        </div>
+
+        {/* Wallet Submit Form */}
+        <form onSubmit={handleSubmit} className="w-full max-w-md">
+          <div className="flex gap-3">
+            <Input
+              type="text"
+              placeholder="Your taproot address"
+              value={wallet}
+              onChange={(e) => setWallet(e.target.value)}
+              className="bg-black/40 border-orange-500/30 text-white placeholder:text-gray-500 focus:border-orange-400 backdrop-blur-sm rounded-xl px-6 py-4 text-lg font-mono"
+            />
+            <Button 
+              type="submit"
+              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-black font-semibold px-8 py-4 rounded-xl transition-all duration-300"
+            >
+              Submit
             </Button>
           </div>
-        </div>
-
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/60 rounded-full animate-pulse"></div>
-          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-amber-400/60 rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-white/40 rounded-full animate-pulse delay-2000"></div>
-          <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-amber-300/50 rounded-full animate-pulse delay-500"></div>
-        </div>
+        </form>
       </div>
 
-      {/* Attribution */}
-      <div className="absolute bottom-4 right-4 z-20">
-        <p className="text-gray-400 text-sm opacity-60">
-          being experimented on by SmokeAlot420
-        </p>
+      {/* Minimal floating elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 left-1/4 w-1 h-1 bg-orange-400/40 rounded-full animate-pulse delay-1000"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-1 h-1 bg-amber-400/30 rounded-full animate-pulse delay-2000"></div>
+        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-orange-300/40 rounded-full animate-pulse delay-500"></div>
       </div>
     </div>
   );
