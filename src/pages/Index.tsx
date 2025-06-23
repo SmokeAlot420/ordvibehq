@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import AnimatedTestTube from "@/components/AnimatedTestTube";
-import SyntheticWave3D from "@/components/SyntheticWave3D";
+import BitcoinRailway3D from "@/components/BitcoinRailway3D";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
@@ -14,9 +14,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* 3D Synthetic Wave Background */}
+      {/* 3D Bitcoin Railway Background */}
       <div className="absolute inset-0 z-0">
-        <SyntheticWave3D />
+        <BitcoinRailway3D />
       </div>
 
       {/* Content Overlay */}
