@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Text3D, Center } from "@react-three/drei";
 import * as THREE from "three";
 
 // CH4 Molecule Component
@@ -17,51 +16,49 @@ function CH4Molecule({ position, scale = 1 }: { position: [number, number, numbe
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <group ref={groupRef} position={position} scale={scale}>
-        {/* Carbon atom (center) */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.3, 16, 16]} />
-          <meshStandardMaterial color="#404040" metalness={0.3} roughness={0.4} />
-        </mesh>
-        
-        {/* Hydrogen atoms */}
-        <mesh position={[0.6, 0.6, 0.6]}>
-          <sphereGeometry args={[0.15, 12, 12]} />
-          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
-        </mesh>
-        <mesh position={[-0.6, -0.6, 0.6]}>
-          <sphereGeometry args={[0.15, 12, 12]} />
-          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
-        </mesh>
-        <mesh position={[0.6, -0.6, -0.6]}>
-          <sphereGeometry args={[0.15, 12, 12]} />
-          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
-        </mesh>
-        <mesh position={[-0.6, 0.6, -0.6]}>
-          <sphereGeometry args={[0.15, 12, 12]} />
-          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
-        </mesh>
-        
-        {/* Bonds */}
-        <mesh position={[0.3, 0.3, 0.3]} rotation={[Math.PI/4, Math.PI/4, 0]}>
-          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
-          <meshStandardMaterial color="#666666" />
-        </mesh>
-        <mesh position={[-0.3, -0.3, 0.3]} rotation={[-Math.PI/4, -Math.PI/4, 0]}>
-          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
-          <meshStandardMaterial color="#666666" />
-        </mesh>
-        <mesh position={[0.3, -0.3, -0.3]} rotation={[Math.PI/4, -Math.PI/4, 0]}>
-          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
-          <meshStandardMaterial color="#666666" />
-        </mesh>
-        <mesh position={[-0.3, 0.3, -0.3]} rotation={[-Math.PI/4, Math.PI/4, 0]}>
-          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
-          <meshStandardMaterial color="#666666" />
-        </mesh>
-      </group>
-    </Float>
+    <group ref={groupRef} position={position} scale={scale}>
+      {/* Carbon atom (center) */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.3, 16, 16]} />
+        <meshStandardMaterial color="#404040" metalness={0.3} roughness={0.4} />
+      </mesh>
+      
+      {/* Hydrogen atoms */}
+      <mesh position={[0.6, 0.6, 0.6]}>
+        <sphereGeometry args={[0.15, 12, 12]} />
+        <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+      </mesh>
+      <mesh position={[-0.6, -0.6, 0.6]}>
+        <sphereGeometry args={[0.15, 12, 12]} />
+        <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+      </mesh>
+      <mesh position={[0.6, -0.6, -0.6]}>
+        <sphereGeometry args={[0.15, 12, 12]} />
+        <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+      </mesh>
+      <mesh position={[-0.6, 0.6, -0.6]}>
+        <sphereGeometry args={[0.15, 12, 12]} />
+        <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+      </mesh>
+      
+      {/* Bonds */}
+      <mesh position={[0.3, 0.3, 0.3]} rotation={[Math.PI/4, Math.PI/4, 0]}>
+        <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+        <meshStandardMaterial color="#666666" />
+      </mesh>
+      <mesh position={[-0.3, -0.3, 0.3]} rotation={[-Math.PI/4, -Math.PI/4, 0]}>
+        <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+        <meshStandardMaterial color="#666666" />
+      </mesh>
+      <mesh position={[0.3, -0.3, -0.3]} rotation={[Math.PI/4, -Math.PI/4, 0]}>
+        <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+        <meshStandardMaterial color="#666666" />
+      </mesh>
+      <mesh position={[-0.3, 0.3, -0.3]} rotation={[-Math.PI/4, Math.PI/4, 0]}>
+        <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+        <meshStandardMaterial color="#666666" />
+      </mesh>
+    </group>
   );
 }
 
@@ -69,13 +66,13 @@ function CH4Molecule({ position, scale = 1 }: { position: [number, number, numbe
 function FloatingParticles() {
   const particlesRef = useRef<THREE.Points>(null);
   
-  const particleCount = 100;
+  const particleCount = 50;
   const positions = new Float32Array(particleCount * 3);
   
   for (let i = 0; i < particleCount * 3; i += 3) {
-    positions[i] = (Math.random() - 0.5) * 20;
-    positions[i + 1] = (Math.random() - 0.5) * 20;
-    positions[i + 2] = (Math.random() - 0.5) * 20;
+    positions[i] = (Math.random() - 0.5) * 15;
+    positions[i + 1] = (Math.random() - 0.5) * 15;
+    positions[i + 2] = (Math.random() - 0.5) * 15;
   }
   
   useFrame((state) => {
@@ -94,7 +91,7 @@ function FloatingParticles() {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial color="#ff6b35" size={0.05} sizeAttenuation />
+      <pointsMaterial color="#ff6b35" size={0.1} sizeAttenuation />
     </points>
   );
 }
@@ -118,7 +115,6 @@ function MolecularScene() {
       <CH4Molecule position={[-2, -3, 3]} scale={0.7} />
       <CH4Molecule position={[3, 3, -3]} scale={0.9} />
       <CH4Molecule position={[0, 0, 4]} scale={0.5} />
-      <CH4Molecule position={[-4, 1, -1]} scale={0.8} />
     </>
   );
 }
