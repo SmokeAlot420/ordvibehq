@@ -51,6 +51,12 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
   }
 
   .dark {
@@ -89,6 +95,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
@@ -99,5 +111,99 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Apple-style glass morphism */
+.glass-morphism {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth particle animations */
+.particle {
+  will-change: transform, opacity;
+  transform-origin: center;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* Professional glow effects */
+.glow-orange {
+  box-shadow: 
+    0 0 20px rgba(255, 107, 53, 0.3),
+    0 0 40px rgba(255, 107, 53, 0.2),
+    0 0 80px rgba(255, 107, 53, 0.1);
+}
+
+.glow-blue {
+  box-shadow: 
+    0 0 20px rgba(0, 212, 255, 0.3),
+    0 0 40px rgba(0, 212, 255, 0.2),
+    0 0 80px rgba(0, 212, 255, 0.1);
+}
+
+/* Smooth transitions */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Apple-style button hover */
+.apple-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.apple-button:hover {
+  transform: scale(1.02) translateY(-1px);
+  box-shadow: 
+    0 10px 25px rgba(255, 107, 53, 0.2),
+    0 0 0 1px rgba(255, 107, 53, 0.1);
+}
+
+.apple-button:active {
+  transform: scale(0.98);
+  transition-duration: 0.1s;
+}
+
+/* Smooth input focus */
+.apple-input {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apple-input:focus {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(255, 107, 53, 0.15),
+    0 0 0 1px rgba(255, 107, 53, 0.3);
+}
+
+/* 3D Highway Tunnel Effects */
+.highway-lane {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.highway-particle {
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+/* Performance optimization */
+@media (prefers-reduced-motion: reduce) {
+  .highway-particle,
+  .highway-lane {
+    animation: none !important;
+    transition: none !important;
   }
 }
