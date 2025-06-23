@@ -1,106 +1,184 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Float, Text3D, Center } from "@react-three/drei";
+import * as THREE from "three";
+
+// CH4 Molecule Component
+function CH4Molecule({ position, scale = 1 }: { position: [number, number, number], scale?: number }) {
+  const groupRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.3;
+    }
+  });
+
+  return (
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+      <group ref={groupRef} position={position} scale={scale}>
+        {/* Carbon atom (center) */}
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry args={[0.3, 16, 16]} />
+          <meshStandardMaterial color="#404040" metalness={0.3} roughness={0.4} />
+        </mesh>
+        
+        {/* Hydrogen atoms */}
+        <mesh position={[0.6, 0.6, 0.6]}>
+          <sphereGeometry args={[0.15, 12, 12]} />
+          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+        </mesh>
+        <mesh position={[-0.6, -0.6, 0.6]}>
+          <sphereGeometry args={[0.15, 12, 12]} />
+          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+        </mesh>
+        <mesh position={[0.6, -0.6, -0.6]}>
+          <sphereGeometry args={[0.15, 12, 12]} />
+          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+        </mesh>
+        <mesh position={[-0.6, 0.6, -0.6]}>
+          <sphereGeometry args={[0.15, 12, 12]} />
+          <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.6} />
+        </mesh>
+        
+        {/* Bonds */}
+        <mesh position={[0.3, 0.3, 0.3]} rotation={[Math.PI/4, Math.PI/4, 0]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+          <meshStandardMaterial color="#666666" />
+        </mesh>
+        <mesh position={[-0.3, -0.3, 0.3]} rotation={[-Math.PI/4, -Math.PI/4, 0]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+          <meshStandardMaterial color="#666666" />
+        </mesh>
+        <mesh position={[0.3, -0.3, -0.3]} rotation={[Math.PI/4, -Math.PI/4, 0]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+          <meshStandardMaterial color="#666666" />
+        </mesh>
+        <mesh position={[-0.3, 0.3, -0.3]} rotation={[-Math.PI/4, Math.PI/4, 0]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.6, 8]} />
+          <meshStandardMaterial color="#666666" />
+        </mesh>
+      </group>
+    </Float>
+  );
+}
+
+// Floating Particles
+function FloatingParticles() {
+  const particlesRef = useRef<THREE.Points>(null);
+  
+  const particleCount = 100;
+  const positions = new Float32Array(particleCount * 3);
+  
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    positions[i] = (Math.random() - 0.5) * 20;
+    positions[i + 1] = (Math.random() - 0.5) * 20;
+    positions[i + 2] = (Math.random() - 0.5) * 20;
+  }
+  
+  useFrame((state) => {
+    if (particlesRef.current) {
+      particlesRef.current.rotation.y = state.clock.elapsedTime * 0.05;
+    }
+  });
+
+  return (
+    <points ref={particlesRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={particleCount}
+          array={positions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial color="#ff6b35" size={0.05} sizeAttenuation />
+    </points>
+  );
+}
+
+// Main 3D Scene
+function MolecularScene() {
+  return (
+    <>
+      {/* Lighting */}
+      <ambientLight intensity={0.4} />
+      <pointLight position={[10, 10, 10]} intensity={1} color="#ff6b35" />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#00d4ff" />
+      <directionalLight position={[0, 5, 5]} intensity={0.8} />
+      
+      {/* Floating Particles */}
+      <FloatingParticles />
+      
+      {/* CH4 Molecules */}
+      <CH4Molecule position={[-3, 2, -2]} scale={0.8} />
+      <CH4Molecule position={[4, -1, 1]} scale={0.6} />
+      <CH4Molecule position={[-2, -3, 3]} scale={0.7} />
+      <CH4Molecule position={[3, 3, -3]} scale={0.9} />
+      <CH4Molecule position={[0, 0, 4]} scale={0.5} />
+      <CH4Molecule position={[-4, 1, -1]} scale={0.8} />
+    </>
+  );
+}
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle wallet submission
     console.log("Wallet submitted:", wallet);
   };
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* CSS to hide Spline watermark */}
-      <style>{`
-        spline-viewer::part(logo) {
-          display: none !important;
-        }
-        spline-viewer .spline-watermark {
-          display: none !important;
-        }
-        spline-viewer [data-testid="spline-logo"] {
-          display: none !important;
-        }
-        spline-viewer .logo {
-          display: none !important;
-        }
-        spline-viewer::part(default-ui) {
-          display: none !important;
-        }
-        spline-viewer .watermark {
-          display: none !important;
-        }
-        spline-viewer [class*="watermark"] {
-          display: none !important;
-        }
-        spline-viewer [class*="logo"] {
-          display: none !important;
-        }
-        spline-viewer [class*="spline"] {
-          display: none !important;
-        }
-        /* Hide any bottom right elements */
-        spline-viewer > div:last-child {
-          display: none !important;
-        }
-      `}</style>
-
-      {/* Spline 3D Background */}
+      {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <spline-viewer url="https://prod.spline.design/dYsR51OTIcSHoMC5/scene.splinecode" style={{
-        width: "100%",
-        height: "100%",
-        display: "block"
-      }}></spline-viewer>
+        <Canvas
+          camera={{ position: [0, 0, 8], fov: 60 }}
+          style={{ background: 'radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%)' }}
+        >
+          <MolecularScene />
+        </Canvas>
       </div>
 
-      {/* Subtle dark overlay */}
-      <div className="absolute inset-0 bg-black/30 z-5"></div>
-
-      {/* Hero Content */}
-      <div className="relative min-h-screen flex flex-col items-center justify-center px-8 z-10">
-        <div className="max-w-4xl text-center mb-16">
+      {/* Content Overlay */}
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+        <div className="text-center space-y-8 max-w-md mx-auto">
           {/* Main mysterious line */}
-          <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight tracking-tighter">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500">
-              OrdVibeHQ
-            </span>
+          <h1 className="text-4xl md:text-6xl font-black mb-8 leading-tight tracking-tighter">
+            <div className="inline-block relative">
+              {/* Custom minimal test tube */}
+              <div className="w-8 h-16 md:w-12 md:h-20 border-2 border-emerald-400 rounded-b-full mx-auto relative">
+                <div className="absolute bottom-0 left-0 right-0 h-6 md:h-8 bg-emerald-400/30 rounded-b-full"></div>
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-emerald-400"></div>
+              </div>
+            </div>
           </h1>
 
-          {/* Subtle hint */}
-          <p className="text-xl md:text-2xl text-gray-400 font-mono tracking-wide">
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-gray-400 font-mono">
             alkanes.experiment( )
           </p>
-        </div>
 
-        {/* Wallet Submit Form */}
-        <form onSubmit={handleSubmit} className="w-full max-w-md">
-          <div className="flex gap-3">
+          {/* Wallet Input */}
+          <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               type="text"
-              placeholder="Your taproot address"
+              placeholder="Enter taproot address"
               value={wallet}
               onChange={(e) => setWallet(e.target.value)}
-              className="bg-black/40 border-orange-500/30 text-white placeholder:text-gray-500 focus:border-orange-400 backdrop-blur-sm rounded-xl px-6 py-4 text-lg font-mono"
+              className="bg-black/50 border-gray-700 text-white placeholder-gray-500 backdrop-blur-sm"
             />
             <Button 
               type="submit"
-              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-black font-semibold px-8 py-4 rounded-xl transition-all duration-300"
+              className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-black font-semibold"
             >
               Submit
             </Button>
-          </div>
-        </form>
-      </div>
-
-      {/* Minimal floating elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-1 h-1 bg-orange-400/40 rounded-full animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-1 h-1 bg-amber-400/30 rounded-full animate-pulse delay-2000"></div>
-        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-orange-300/40 rounded-full animate-pulse delay-500"></div>
+          </form>
+        </div>
       </div>
     </div>
   );
