@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import AnimatedTestTube from "@/components/AnimatedTestTube";
-import BitcoinRailway3D from "@/components/BitcoinRailway3D";
+import AppleBackground from "@/components/AppleBackground";
+import BioTerminal from "@/components/BioTerminal";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
@@ -14,39 +15,53 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* 3D Bitcoin Railway Background */}
-      <div className="absolute inset-0 z-0">
-        <BitcoinRailway3D />
-      </div>
+      {/* Apple-quality Background Animation */}
+      <AppleBackground />
 
       {/* Content Overlay */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
-        <div className="text-center space-y-8 max-w-md mx-auto glass-morphism p-8 smooth-transition backdrop-blur-md bg-black/30 rounded-2xl border border-white/10">
+        {/* Premium glow effect */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-[800px] h-[800px] opacity-20">
+            <div className="w-full h-full bg-gradient-radial from-white/5 via-transparent to-transparent rounded-full blur-3xl" />
+          </div>
+        </div>
+        
+        <div className="text-center space-y-6 max-w-lg mx-auto premium-glass p-10 rounded-2xl">
           {/* Main mysterious line */}
-          <h1 className="text-4xl md:text-6xl font-black mb-8 leading-tight tracking-tighter">
+          <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tighter animate-fade-in">
             <AnimatedTestTube />
           </h1>
 
-          {/* Subtitle with smooth fade-in */}
-          <p className="text-lg md:text-xl text-gray-400 font-mono opacity-80">
-            alkanes.experiment( )
-          </p>
+          {/* Terminal Status Bar */}
+          <div className="mb-3">
+            <BioTerminal />
+          </div>
+
+          {/* Alkanes Experiment Text - Clean version */}
+          <div className="mb-6">
+            <p className="text-xs md:text-sm alkanes-text">
+              alkanes.experiment( )
+            </p>
+          </div>
 
           {/* Wallet Input with glass morphism */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              type="text"
-              placeholder="Enter taproot address"
-              value={wallet}
-              onChange={(e) => setWallet(e.target.value)}
-              className="apple-input bg-white/5 border-white/20 text-white placeholder-gray-400 backdrop-blur-md focus:bg-white/10 focus:border-orange-400/50"
-            />
-            <Button 
-              type="submit"
-              className="apple-button w-full bg-gradient-to-r from-orange-500/90 to-amber-500/90 hover:from-orange-500 hover:to-amber-500 text-black font-semibold backdrop-blur-sm"
-            >
-              Submit
-            </Button>
+          <form onSubmit={handleSubmit} className="space-y-4 mt-8 animate-fade-in animate-delay-2">
+            <div className="flex space-x-2">
+              <Input
+                type="text"
+                placeholder="Your taproot address"
+                value={wallet}
+                onChange={(e) => setWallet(e.target.value)}
+                className="apple-input h-14 text-base rounded-2xl px-6 flex-1"
+              />
+              <Button 
+                type="submit"
+                className="premium-button h-14 px-8 text-base rounded-2xl font-medium tracking-wide"
+              >
+                Submit
+              </Button>
+            </div>
           </form>
         </div>
       </div>

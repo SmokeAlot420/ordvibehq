@@ -31,7 +31,7 @@ const AnimatedTestTube = () => {
 
       {/* Main test tube container */}
       <motion.div
-        className="relative w-12 h-24 md:w-16 md:h-32"
+        className="relative w-20 h-48 md:w-24 md:h-56"
         animate={{ rotateY: [0, 10, -10, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
