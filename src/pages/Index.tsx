@@ -5,13 +5,53 @@ import AnimatedTestTube from "@/components/AnimatedTestTube";
 import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
 import WalletIcon from "@/components/ui/WalletIcon";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Wallet submitted:", wallet);
+
+    if (!wallet.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a wallet address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbw9-WoRk4Qz1ZjHK8XW3qPEKKRJnOKpUPac5mKv4MYaSHDt2TNIH22n14aI40AvZs_D/exec",
+        {
+          method: "POST",
+          mode: "no-cors", // Required for Google Apps Script
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ wallet: wallet }),
+        }
+      );
+
+      // Since mode is 'no-cors', we can't directly read the response status or body.
+      // We'll assume success if no network error occurred.
+      toast({
+        title: "Success!",
+        description: "Your wallet address has been submitted.",
+      });
+      setWallet(""); // Clear the input field
+    } catch (error) {
+      console.error("Error submitting wallet:", error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your wallet address. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -69,6 +109,7 @@ const Index = () => {
           </form>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

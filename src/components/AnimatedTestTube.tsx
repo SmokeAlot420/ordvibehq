@@ -3,11 +3,56 @@ import { useEffect, useState } from "react";
 
 const AnimatedTestTube = () => {
   const [isActive, setIsActive] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState("");
+
+  // Message arrays for dynamic generation
+  const ordinalsMessages = [
+    "inscribing satoshis", "digital artifact secured", "immutable data", "on-chain forever",
+    "first is first", "rare sats", "blockspace is precious", "cypherpunk ethos",
+    "verifiably scarce", "uncommon sats", "provably unique", "digital antiquity"
+  ];
+
+  const alkanesMessages = [
+    "$METHANE bubbling", "$DIESEL combusting", "$ETHANE cracking", "$PROPANE igniting",
+    "hydrocarbon chains forming", "covalent bonds strengthening", "polymerization in progress",
+    "alkane synthesis", "catalytic conversion", "fractional distillation", "isomeric purity"
+  ];
+
+  const processMessages = [
+    "something is brewing", "reaction starting", "catalyst added", "temperature rising",
+    "pressure building", "pH shifting", "bonds forming", "energy building",
+    "molecules dancing", "atoms colliding", "chains extending", "reaction cascading",
+    "elements combining", "structure forming", "pattern emerging", "synthesis beginning"
+  ];
+
+  const mysteryMessages = [
+    "they don't know", "it's happening", "getting closer", "almost there",
+    "can't stop it now", "the secret ingredient", "forbidden knowledge",
+    "ancient formula", "lost recipe", "hidden truth", "classified data",
+    "experimental phase", "prototype loading", "algorithm running", "code compiling"
+  ];
+
+  const warningMessages = [
+    "careful now", "watch closely", "don't blink", "steady hands",
+    "one wrong move", "critical point", "danger zone", "unstable mixture",
+    "volatile compound", "handle with care", "safety first", "keep distance"
+  ];
+
+  const randomMessage = () => {
+    const allArrays = [ordinalsMessages, alkanesMessages, processMessages, mysteryMessages, warningMessages];
+    const randomArray = allArrays[Math.floor(Math.random() * allArrays.length)];
+    return randomArray[Math.floor(Math.random() * randomArray.length)];
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsActive(prev => !prev);
+      setCurrentMessage(randomMessage());
     }, 3000);
+    
+    // Set initial message
+    setCurrentMessage(randomMessage());
+    
     return () => clearInterval(interval);
   }, []);
 
@@ -140,30 +185,22 @@ const AnimatedTestTube = () => {
           }}
           transition={{ duration: 2, ease: "easeInOut" }}
         />
+
+        {/* Dynamic mysterious message */}
+        <motion.div
+          key={currentMessage} // This makes it re-animate when message changes
+          className="absolute -right-32 top-1/2 -translate-y-1/2 text-sm text-cyan-300/80 font-mono whitespace-nowrap tracking-wider"
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          style={{ letterSpacing: '0.1em' }}
+        >
+          {currentMessage}
+        </motion.div>
       </motion.div>
 
-      {/* Floating chemistry symbols */}
-      <motion.div
-        className="absolute -top-6 -right-4 text-xs font-mono text-emerald-400/60"
-        animate={{ 
-          y: [-5, 5, -5],
-          opacity: [0.4, 0.8, 0.4]
-        }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      >
-        CH₄
-      </motion.div>
 
-      <motion.div
-        className="absolute -bottom-2 -left-4 text-xs font-mono text-blue-400/60"
-        animate={{ 
-          y: [5, -5, 5],
-          opacity: [0.4, 0.8, 0.4]
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      >
-        H₂O
-      </motion.div>
     </motion.div>
   );
 };
