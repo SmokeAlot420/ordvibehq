@@ -4,6 +4,7 @@ import { useState } from "react";
 import AnimatedTestTube from "@/components/AnimatedTestTube";
 import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
+import WalletIcon from "@/components/ui/WalletIcon";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
@@ -41,25 +42,28 @@ const Index = () => {
           {/* Alkanes Experiment Text - Clean version */}
           <div className="mb-6">
             <p className="text-xs md:text-sm alkanes-text">
-              alkanes.experiment( )
+              an alkanes.experiment( )
             </p>
           </div>
 
           {/* Wallet Input with glass morphism */}
           <form onSubmit={handleSubmit} className="space-y-4 mt-8 animate-fade-in animate-delay-2">
-            <div className="flex space-x-2">
+            <div className="relative flex items-center">
               <Input
                 type="text"
                 placeholder="Your taproot address"
                 value={wallet}
                 onChange={(e) => setWallet(e.target.value)}
-                className="apple-input h-14 text-base rounded-2xl px-6 flex-1"
+                className="apple-input h-14 text-base rounded-2xl px-6 flex-1 pr-12"
               />
-              <Button 
+              <Button
                 type="submit"
-                className="premium-button h-14 px-8 text-base rounded-2xl font-medium tracking-wide"
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
               >
-                Submit
+                <WalletIcon className="w-6 h-6" />
+                <span className="sr-only">Submit</span>
               </Button>
             </div>
           </form>
