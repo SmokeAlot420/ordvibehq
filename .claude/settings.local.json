@@ -16,7 +16,8 @@
       "Bash(git stash:*)",
       "Bash(npm install:*)",
       "mcp__supabase__get_anon_key",
-      "mcp__netlify__netlify-project-services"
+      "mcp__netlify__netlify-project-services",
+      "WebFetch(domain:docs.anthropic.com)"
     ],
     "deny": []
   }

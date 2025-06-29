@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mobile Centering</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-frame {
+            border: 2px solid #0ff;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .mobile-frame {
+            width: 390px;
+            height: 844px;
+        }
+        .desktop-frame {
+            width: 100%;
+            height: 600px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+        .center-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background: red;
+            z-index: 5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Tube Centering Test</h1>
+        
+        <div class="test-frame mobile-frame">
+            <div class="label">Mobile View (390x844)</div>
+            <div class="center-line"></div>
+            <iframe src="http://localhost:7777/"></iframe>
+        </div>
+        
+        <div class="test-frame desktop-frame">
+            <div class="label">Desktop View</div>
+            <div class="center-line"></div>
+            <iframe src="http://localhost:7777/"></iframe>
+        </div>
+    </div>
+</body>
+</html>

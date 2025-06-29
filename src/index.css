@@ -2020,3 +2020,26 @@ body {
     opacity: 0.8;
   }
 }
+
+/* Mobile centering fix for test tube */
+@media (max-width: 640px) {
+  /* Ensure test tube is centered on mobile */
+  h1 {
+    display: flex \!important;
+    justify-content: center \!important;
+    align-items: center \!important;
+    width: 100% \!important;
+  }
+  
+  /* Fix for test tube container */
+  .relative.inline-block.cursor-pointer {
+    margin: 0 auto \!important;
+    display: block \!important;
+  }
+  
+  /* Ensure proper spacing for mobile message */
+  .block.sm\\:hidden {
+    margin-top: 1rem \!important;
+    text-align: center \!important;
+  }
+}
