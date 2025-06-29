@@ -78,7 +78,7 @@ const AnimatedTestTube = () => {
 
       {/* Main test tube container */}
       <motion.div
-        className="relative w-20 h-48 md:w-24 md:h-56"
+        className="relative w-16 h-36 sm:w-20 sm:h-48 md:w-24 md:h-56"
         animate={{ rotateY: [0, 10, -10, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -128,14 +128,14 @@ const AnimatedTestTube = () => {
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          {/* Bubbles */}
-          {[...Array(6)].map((_, i) => (
+          {/* Bubbles - reduced for mobile performance */}
+          {[...Array(4)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-1 h-1 bg-white/60 rounded-full"
               style={{
-                left: `${30 + i * 8}%`,
-                bottom: `${20 + i * 5}%`
+                left: `${30 + i * 12}%`,
+                bottom: `${20 + i * 8}%`
               }}
               animate={{
                 y: [-20, -40, -20],
@@ -151,11 +151,11 @@ const AnimatedTestTube = () => {
             />
           ))}
 
-          {/* Energy particles */}
-          {[...Array(8)].map((_, i) => (
+          {/* Energy particles - reduced for mobile performance */}
+          {[...Array(5)].map((_, i) => (
             <motion.div
               key={`particle-${i}`}
-              className="absolute w-0.5 h-0.5 rounded-full"
+              className="absolute w-0.5 h-0.5 rounded-full hidden sm:block"
               style={{
                 background: isActive ? "rgba(0, 255, 127, 0.8)" : "rgba(0, 212, 255, 0.6)",
                 left: `${Math.random() * 80 + 10}%`,
@@ -191,7 +191,7 @@ const AnimatedTestTube = () => {
         {/* Dynamic mysterious message */}
         <motion.div
           key={currentMessage} // This makes it re-animate when message changes
-          className="absolute -right-32 top-1/2 -translate-y-1/2 text-sm text-cyan-300/80 font-mono whitespace-nowrap tracking-wider"
+          className="absolute -right-24 sm:-right-32 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-cyan-300/80 font-mono whitespace-nowrap tracking-wider hidden sm:block"
           initial={{ opacity: 0, x: 10 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -10 }}
@@ -202,7 +202,18 @@ const AnimatedTestTube = () => {
         </motion.div>
       </motion.div>
 
-
+      {/* Mobile version of message */}
+      <motion.div
+        key={`mobile-${currentMessage}`}
+        className="block sm:hidden mt-4 text-xs text-cyan-300/80 font-mono tracking-wider text-center"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+        style={{ letterSpacing: '0.1em' }}
+      >
+        {currentMessage}
+      </motion.div>
     </motion.div>
   );
 };

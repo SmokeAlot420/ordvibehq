@@ -116,34 +116,34 @@ const Index = () => {
       <AppleBackground />
 
       {/* Content Overlay */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">
         {/* Premium glow effect */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[800px] h-[800px] opacity-20">
+          <div className="w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] opacity-20">
             <div className="w-full h-full bg-gradient-radial from-white/5 via-transparent to-transparent rounded-full blur-3xl" />
           </div>
         </div>
         
-        <div className="text-center space-y-6 max-w-lg mx-auto premium-glass p-10 rounded-2xl">
+        <div className="text-center space-y-4 sm:space-y-6 w-full max-w-lg mx-auto premium-glass p-6 sm:p-8 md:p-10 rounded-2xl">
           {/* Main mysterious line */}
-          <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tighter animate-fade-in">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6 leading-tight tracking-tighter animate-fade-in">
             <AnimatedTestTube />
           </h1>
 
           {/* Terminal Status Bar */}
-          <div className="mb-3">
+          <div className="mb-2 sm:mb-3">
             <BioTerminal />
           </div>
 
           {/* Alkanes Experiment Text - Clean version */}
-          <div className="mb-6">
-            <p className="text-xs md:text-sm alkanes-text">
+          <div className="mb-4 sm:mb-6">
+            <p className="text-[10px] sm:text-xs md:text-sm alkanes-text">
               an alkanes.experiment( )
             </p>
           </div>
 
           {/* Unified Form Container */}
-          <form onSubmit={handleSubmit} className="mt-8 animate-fade-in animate-delay-2">
+          <form onSubmit={handleSubmit} className="mt-4 sm:mt-6 md:mt-8 animate-fade-in animate-delay-2">
             <div className="alkanes-form-container relative">
               {/* Glow effect */}
               <div className="alkanes-form-glow" />

@@ -1774,17 +1774,24 @@
 /* Mobile responsiveness */
 @media (max-width: 640px) {
   .alkanes-form-container {
-    border-radius: 20px;
+    border-radius: 16px;
   }
   
   .alkanes-input {
-    height: 56px;
-    font-size: 15px;
+    height: 50px;
+    font-size: 16px; /* Prevent zoom on iOS */
     padding: 0 50px 0 20px;
   }
   
   .alkanes-input-icon {
     right: 20px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  .alkanes-input-icon svg {
+    width: 18px;
+    height: 18px;
   }
   
   .alkanes-form-divider {
@@ -1798,8 +1805,10 @@
     transform: none;
     width: calc(100% - 16px);
     margin: 8px;
-    height: 48px;
+    height: 44px;
     justify-content: center;
+    font-size: 14px;
+    padding: 0 24px;
   }
   
   .alkanes-submit-button:hover {
@@ -1811,11 +1820,273 @@
   }
 }
 
+/* Enhanced mobile optimization for very small screens */
+@media (max-width: 430px) {
+  /* Main heading adjustments */
+  h1 {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+  }
+  
+  /* Test tube sizing */
+  .relative.w-20.h-48 {
+    width: 60px !important;
+    height: 144px !important;
+  }
+  
+  /* Test tube message positioning */
+  .absolute.-right-32 {
+    position: relative !important;
+    right: auto !important;
+    left: auto !important;
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.75rem !important;
+  }
+  
+  /* Premium glass container */
+  .premium-glass {
+    padding: 1.5rem !important;
+    margin: 0 1rem;
+  }
+  
+  /* Alkanes experiment text */
+  .alkanes-text {
+    font-size: 0.625rem !important;
+  }
+  
+  /* Bio terminal adjustments */
+  .bio-terminal {
+    padding: 1rem;
+  }
+  
+  .terminal-status-bar {
+    font-size: 0.625rem !important;
+    gap: 0.75rem !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .status-item:not(:last-child)::after {
+    display: none;
+  }
+  
+  /* Form container */
+  .alkanes-form-container {
+    margin-top: 1.5rem;
+  }
+  
+  /* Input adjustments */
+  .alkanes-input {
+    height: 48px;
+    font-size: 16px; /* Prevent iOS zoom */
+    padding: 0 45px 0 16px;
+  }
+  
+  .alkanes-input-icon {
+    right: 16px;
+  }
+  
+  /* Submit button for mobile */
+  .alkanes-submit-button {
+    height: 42px;
+    font-size: 13px;
+    gap: 8px;
+  }
+  
+  .alkanes-submit-icon {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  /* Reduce spacing */
+  .space-y-6 {
+    gap: 1rem !important;
+  }
+  
+  /* Background glow adjustments */
+  .w-\[800px\].h-\[800px\] {
+    width: 400px !important;
+    height: 400px !important;
+  }
+}
+
+/* Ultra small devices (320px - 375px) */
+@media (max-width: 375px) {
+  /* Even smaller test tube */
+  .relative.w-20.h-48 {
+    width: 50px !important;
+    height: 120px !important;
+  }
+  
+  /* Reduce padding further */
+  .premium-glass {
+    padding: 1.25rem !important;
+  }
+  
+  /* Smaller form inputs */
+  .alkanes-input {
+    height: 44px;
+    font-size: 15px;
+    padding: 0 40px 0 14px;
+  }
+  
+  .alkanes-input-icon {
+    right: 14px;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .alkanes-input-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Smaller submit button */
+  .alkanes-submit-button {
+    height: 40px;
+    font-size: 12px;
+    padding: 0 20px;
+  }
+  
+  /* Terminal text smaller */
+  .terminal-status-bar {
+    font-size: 0.5625rem !important;
+  }
+}
+
+/* Touch-friendly hover states for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .alkanes-submit-button:hover {
+    transform: none;
+    background: rgba(0, 255, 127, 0.1);
+    border-color: rgba(0, 255, 127, 0.3);
+  }
+  
+  .alkanes-form-container:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.01);
+  }
+  
+  .alkanes-input-wrapper:focus-within .alkanes-input-icon {
+    transform: none;
+  }
+  
+  /* Disable hover effects on touch devices */
+  .premium-glass:hover::before,
+  .premium-glass:hover::after {
+    display: none;
+  }
+}
+
+/* Fix for iOS Safari input zoom */
+@supports (-webkit-touch-callout: none) {
+  .alkanes-input {
+    font-size: 16px !important;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+  .min-h-screen {
+    min-height: auto;
+    padding: 1rem 0;
+  }
+  
+  .premium-glass {
+    padding: 1rem 2rem !important;
+  }
+  
+  .relative.w-20.h-48 {
+    width: 50px !important;
+    height: 120px !important;
+  }
+  
+  h1 {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .space-y-6 {
+    gap: 0.5rem !important;
+  }
+  
+  .bio-terminal {
+    padding: 0.5rem;
+  }
+  
+  .terminal-status-bar {
+    font-size: 0.625rem !important;
+  }
+}
+
+/* Fix overlapping elements on mobile */
+@media (max-width: 640px) {
+  /* Ensure proper stacking */
+  .relative.z-10 {
+    z-index: 10;
+  }
+  
+  /* Prevent absolute positioned elements from overlapping */
+  .absolute.inset-0 {
+    pointer-events: none;
+  }
+  
+  /* Toast positioning for mobile */
+  .alkanes-toast-success,
+  .alkanes-toast-error {
+    max-width: calc(100vw - 2rem) !important;
+    margin: 0 1rem !important;
+  }
+}
+
 /* Focus outline for accessibility */
 .alkanes-input:focus-visible {
   outline: 2px solid rgba(255, 107, 53, 0.5);
   outline-offset: 2px;
   border-radius: 8px;
+}
+
+/* Ensure minimum touch target sizes on mobile */
+@media (max-width: 640px) {
+  /* Minimum 44px touch targets as per WCAG guidelines */
+  .alkanes-input,
+  .alkanes-submit-button {
+    min-height: 44px;
+  }
+  
+  /* Better tap highlighting */
+  .alkanes-submit-button {
+    -webkit-tap-highlight-color: rgba(0, 255, 127, 0.1);
+  }
+  
+  /* Prevent text selection on interactive elements */
+  .alkanes-submit-button,
+  .alkanes-form-container {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+  
+  /* Smoother scrolling on iOS */
+  .min-h-screen {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .alkanes-form-container {
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .alkanes-input {
+    border-width: 2px !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+  }
+  
+  .alkanes-submit-button {
+    border-width: 2px;
+  }
 }
 
 /* Animation for form entry */
