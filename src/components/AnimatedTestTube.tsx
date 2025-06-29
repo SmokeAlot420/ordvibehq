@@ -8,14 +8,14 @@ const AnimatedTestTube = () => {
   // Message arrays for dynamic generation
   const ordinalsMessages = [
     "inscribing satoshis", "digital artifact secured", "immutable data", "on-chain forever",
-    "first is first", "rare sats", "blockspace is precious", "cypherpunk ethos",
-    "verifiably scarce", "uncommon sats", "provably unique", "digital antiquity"
+    "first is first", "ordinal theory", "blockspace is precious", "cypherpunk ethos",
+    "verifiably scarce", "permanently stored", "provably unique", "digital antiquity"
   ];
 
   const alkanesMessages = [
-    "$METHANE bubbling", "$DIESEL combusting", "$ETHANE cracking", "$PROPANE igniting",
+    "reaction bubbling", "elements combusting", "chains forming", "catalyst igniting",
     "hydrocarbon chains forming", "covalent bonds strengthening", "polymerization in progress",
-    "alkane synthesis", "catalytic conversion", "fractional distillation", "isomeric purity"
+    "alkane synthesis", "catalytic conversion", "fractional distillation", "molecular bonding"
   ];
 
   const processMessages = [
@@ -32,14 +32,16 @@ const AnimatedTestTube = () => {
     "experimental phase", "prototype loading", "algorithm running", "code compiling"
   ];
 
-  const warningMessages = [
-    "careful now", "watch closely", "don't blink", "steady hands",
-    "one wrong move", "critical point", "danger zone", "unstable mixture",
-    "volatile compound", "handle with care", "safety first", "keep distance"
+  const degenMessages = [
+    "free mint vibes", "full send", "run it", "fuck it we ball",
+    "dude you down?", "ape mode activated", "degen hours", "wagmi",
+    "keep an eye out", "we're experimenting", "mint szn", "stay frosty",
+    "gm gm gm", "lfg", "send it", "no ruggie ser",
+    "probably nothing", "few understand", "cope harder", "ngmi to fud"
   ];
 
   const randomMessage = () => {
-    const allArrays = [ordinalsMessages, alkanesMessages, processMessages, mysteryMessages, warningMessages];
+    const allArrays = [ordinalsMessages, alkanesMessages, processMessages, mysteryMessages, degenMessages];
     const randomArray = allArrays[Math.floor(Math.random() * allArrays.length)];
     return randomArray[Math.floor(Math.random() * randomArray.length)];
   };

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background circle with subtle glow -->
+  <circle cx="16" cy="16" r="15" fill="#0a0a0a" stroke="url(#glow)" stroke-width="1" opacity="0.9"/>
+  
+  <!-- Test tube -->
+  <g transform="translate(16, 16)">
+    <!-- Test tube body -->
+    <path d="M -4 -8 L -4 4 Q -4 8 0 8 Q 4 8 4 4 L 4 -8" 
+          fill="none" 
+          stroke="url(#tubeGradient)" 
+          stroke-width="1.5" 
+          stroke-linecap="round"/>
+    
+    <!-- Liquid inside -->
+    <path d="M -3 0 L -3 4 Q -3 7 0 7 Q 3 7 3 4 L 3 0" 
+          fill="url(#liquidGradient)" 
+          opacity="0.8">
+      <animate attributeName="d" 
+               values="M -3 0 L -3 4 Q -3 7 0 7 Q 3 7 3 4 L 3 0;
+                       M -3 -2 L -3 4 Q -3 7 0 7 Q 3 7 3 4 L 3 -2;
+                       M -3 0 L -3 4 Q -3 7 0 7 Q 3 7 3 4 L 3 0"
+               dur="4s" 
+               repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Bubbles -->
+    <circle cx="-1" cy="2" r="0.5" fill="#00ff7f" opacity="0.6">
+      <animate attributeName="cy" values="2;-4;2" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1" cy="3" r="0.4" fill="#00d4ff" opacity="0.5">
+      <animate attributeName="cy" values="3;-3;3" dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.5;0" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Definitions -->
+  <defs>
+    <!-- Glow gradient -->
+    <radialGradient id="glow">
+      <stop offset="0%" stop-color="#00ff7f" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.2"/>
+    </radialGradient>
+    
+    <!-- Test tube gradient -->
+    <linearGradient id="tubeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00ff7f" stop-opacity="0.9"/>
+    </linearGradient>
+    
+    <!-- Liquid gradient -->
+    <linearGradient id="liquidGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00ff7f" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#00ff7f" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+</svg>

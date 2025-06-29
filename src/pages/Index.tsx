@@ -11,6 +11,7 @@ import { supabase } from "@/lib/supabase";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
+  const [twitter, setTwitter] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,6 +21,15 @@ const Index = () => {
       toast({
         title: "catalyst missing",
         description: "taproot address required for reaction",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!twitter.trim()) {
+      toast({
+        title: "identity missing",
+        description: "X handle required for verification",
         variant: "destructive",
       });
       return;
@@ -36,6 +46,20 @@ const Index = () => {
       return;
     }
 
+    // Clean Twitter handle (remove @ if present)
+    const cleanTwitter = twitter.trim().replace(/^@/, '');
+    
+    // Basic Twitter handle validation
+    const twitterRegex = /^[A-Za-z0-9_]{1,15}$/;
+    if (!twitterRegex.test(cleanTwitter)) {
+      toast({
+        title: "invalid identifier",
+        description: "X handle must be 1-15 characters (letters, numbers, _)",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       // Insert the wallet address into Supabase
       const { data, error } = await supabase
@@ -43,19 +67,28 @@ const Index = () => {
         .insert([
           { 
             wallet_address: wallet.trim(),
+            twitter_handle: cleanTwitter,
             user_agent: navigator.userAgent
           }
         ])
         .select();
 
       if (error) {
-        // Check if it's a duplicate wallet error
+        // Check if it's a duplicate wallet or twitter error
         if (error.code === '23505') {
-          toast({
-            title: "reaction in progress",
-            description: "this catalyst is already active",
-            variant: "destructive",
-          });
+          if (error.message.includes('twitter_handle')) {
+            toast({
+              title: "identity collision",
+              description: "this X handle is already registered",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "reaction in progress",
+              description: "this catalyst is already active",
+              variant: "destructive",
+            });
+          }
         } else {
           throw error;
         }
@@ -64,7 +97,8 @@ const Index = () => {
           title: "reaction initiated",
           description: "catalyst added. chain reaction imminent...",
         });
-        setWallet(""); // Clear the input field
+        setWallet(""); // Clear the input fields
+        setTwitter("");
       }
     } catch (error) {
       console.error("Error submitting wallet:", error);
@@ -108,24 +142,59 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Wallet Input with glass morphism */}
-          <form onSubmit={handleSubmit} className="space-y-4 mt-8 animate-fade-in animate-delay-2">
-            <div className="relative flex items-center">
-              <Input
-                type="text"
-                placeholder="Your taproot address"
-                value={wallet}
-                onChange={(e) => setWallet(e.target.value)}
-                className="apple-input h-14 text-base rounded-2xl px-6 flex-1 pr-12"
-              />
+          {/* Unified Form Container */}
+          <form onSubmit={handleSubmit} className="mt-8 animate-fade-in animate-delay-2">
+            <div className="alkanes-form-container relative">
+              {/* Glow effect */}
+              <div className="alkanes-form-glow" />
+              
+              {/* Main form content */}
+              <div className="alkanes-form-content">
+                {/* Twitter Input */}
+                <div className="alkanes-input-wrapper">
+                  <Input
+                    type="text"
+                    placeholder="@handle"
+                    value={twitter}
+                    onChange={(e) => setTwitter(e.target.value)}
+                    className="alkanes-input"
+                  />
+                  <div className="alkanes-input-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="alkanes-form-divider" />
+
+                {/* Wallet Input */}
+                <div className="alkanes-input-wrapper">
+                  <Input
+                    type="text"
+                    placeholder="taproot address (bc1p...)"
+                    value={wallet}
+                    onChange={(e) => setWallet(e.target.value)}
+                    className="alkanes-input"
+                  />
+                  <div className="alkanes-input-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <Button
                 type="submit"
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                className="alkanes-submit-button"
               >
-                <WalletIcon className="w-6 h-6" />
-                <span className="sr-only">Submit</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="alkanes-submit-icon">
+                  <path d="M17 7l-10 10M17 7h-8M17 7v8" />
+                </svg>
+                <span className="alkanes-submit-text">initialize reaction</span>
               </Button>
             </div>
           </form>
