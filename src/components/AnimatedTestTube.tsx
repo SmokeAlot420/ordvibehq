@@ -7,7 +7,7 @@ const AnimatedTestTube = () => {
 
   // Message arrays for dynamic generation
   const ordinalsMessages = [
-    "inscribing satoshis", "digital artifact secured", "immutable data", "on-chain forever",
+    "inscribing satoshis", "digital artifact secured", "inscription ready", "ordinal placement",
     "first is first", "ordinal theory", "blockspace is precious", "cypherpunk ethos",
     "verifiably scarce", "permanently stored", "provably unique", "digital antiquity"
   ];
@@ -33,11 +33,11 @@ const AnimatedTestTube = () => {
   ];
 
   const degenMessages = [
-    "free mint vibes", "full send", "run it", "fuck it we ball",
-    "dude you down?", "ape mode activated", "degen hours", "wagmi",
-    "keep an eye out", "we're experimenting", "mint szn", "stay frosty",
-    "gm gm gm", "lfg", "send it", "no ruggie ser",
-    "probably nothing", "few understand", "cope harder", "ngmi to fud"
+    "probably nothing", "full send", "run it", "keep an eye out",
+    "dude you down?", "we're experimenting", "stay frosty", "gm gm gm",
+    "send it", "few understand", "experimental, free?", "fair launch",
+    "shadow drop", "doors opening", "almost time", "get ready",
+    "pay attention", "no promises", "iykyk", "trust the process"
   ];
 
   const randomMessage = () => {
