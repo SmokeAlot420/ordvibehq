@@ -1928,7 +1928,7 @@ body {
   }
 
   /* Reduce bubble count on mobile */
-  .absolute.w-1.h-1.bg-white\\/60:nth-child(n+3) {
+  .absolute.w-1.h-1.bg-white\\\/60:nth-child(n+3) {
     display: none;
   }
 
