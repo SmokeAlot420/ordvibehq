@@ -1515,3 +1515,105 @@
     transition: none !important;
   }
 }
+
+/* Alkanes Toast Styles */
+.alkanes-toast-success {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid rgba(0, 255, 127, 0.3) !important;
+  backdrop-filter: blur(20px) saturate(200%);
+  box-shadow: 
+    0 0 40px rgba(0, 255, 127, 0.2),
+    0 0 80px rgba(0, 212, 255, 0.1),
+    inset 0 0 20px rgba(0, 255, 127, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  position: relative;
+  overflow: visible !important;
+}
+
+.alkanes-toast-success::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 127, 0.5),
+    rgba(0, 212, 255, 0.5),
+    rgba(0, 255, 127, 0.5)
+  );
+  border-radius: 8px;
+  opacity: 0;
+  z-index: -1;
+  animation: toastGlowPulse 2s ease-in-out infinite;
+}
+
+.alkanes-toast-error {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid rgba(255, 59, 48, 0.3) !important;
+  backdrop-filter: blur(20px) saturate(200%);
+  box-shadow: 
+    0 0 40px rgba(255, 59, 48, 0.2),
+    0 0 80px rgba(255, 107, 53, 0.1),
+    inset 0 0 20px rgba(255, 59, 48, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.alkanes-toast-error::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 59, 48, 0.5),
+    rgba(255, 107, 53, 0.5),
+    rgba(255, 59, 48, 0.5)
+  );
+  border-radius: 8px;
+  opacity: 0;
+  z-index: -1;
+  animation: toastGlowPulse 2s ease-in-out infinite;
+}
+
+@keyframes toastGlowPulse {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.02);
+  }
+}
+
+/* Toast animation override */
+.alkanes-toast-success,
+.alkanes-toast-error {
+  animation: alkaneToastSlide 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards !important;
+}
+
+@keyframes alkaneToastSlide {
+  from {
+    transform: translateX(100%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Toast close animation */
+[data-state="closed"].alkanes-toast-success,
+[data-state="closed"].alkanes-toast-error {
+  animation: alkaneToastExit 0.3s ease-in forwards !important;
+}
+
+@keyframes alkaneToastExit {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%) scale(0.9);
+    opacity: 0;
+  }
+}

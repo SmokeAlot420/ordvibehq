@@ -7,6 +7,7 @@ import BioTerminal from "@/components/BioTerminal";
 import WalletIcon from "@/components/ui/WalletIcon";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { supabase } from "@/lib/supabase";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
@@ -17,38 +18,59 @@ const Index = () => {
 
     if (!wallet.trim()) {
       toast({
-        title: "Error",
-        description: "Please enter a wallet address.",
+        title: "catalyst missing",
+        description: "taproot address required for reaction",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Basic Taproot address validation (starts with bc1p or tb1p for testnet)
+    const taprootRegex = /^(bc1p|tb1p)[a-z0-9]{58,62}$/i;
+    if (!taprootRegex.test(wallet.trim())) {
+      toast({
+        title: "unstable catalyst",
+        description: "invalid taproot structure (bc1p required)",
         variant: "destructive",
       });
       return;
     }
 
     try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbw9-WoRk4Qz1ZjHK8XW3qPEKKRJnOKpUPac5mKv4MYaSHDt2TNIH22n14aI40AvZs_D/exec",
-        {
-          method: "POST",
-          mode: "no-cors", // Required for Google Apps Script
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ wallet: wallet }),
-        }
-      );
+      // Insert the wallet address into Supabase
+      const { data, error } = await supabase
+        .from('taproot_wallets')
+        .insert([
+          { 
+            wallet_address: wallet.trim(),
+            user_agent: navigator.userAgent
+          }
+        ])
+        .select();
 
-      // Since mode is 'no-cors', we can't directly read the response status or body.
-      // We'll assume success if no network error occurred.
-      toast({
-        title: "Success!",
-        description: "Your wallet address has been submitted.",
-      });
-      setWallet(""); // Clear the input field
+      if (error) {
+        // Check if it's a duplicate wallet error
+        if (error.code === '23505') {
+          toast({
+            title: "reaction in progress",
+            description: "this catalyst is already active",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: "reaction initiated",
+          description: "catalyst added. chain reaction imminent...",
+        });
+        setWallet(""); // Clear the input field
+      }
     } catch (error) {
       console.error("Error submitting wallet:", error);
       toast({
-        title: "Submission Failed",
-        description: "There was an error submitting your wallet address. Please try again.",
+        title: "reaction unstable",
+        description: "chain reaction failed. try again",
         variant: "destructive",
       });
     }

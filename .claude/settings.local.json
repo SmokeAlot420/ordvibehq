@@ -13,7 +13,9 @@
       "Bash(curl:*)",
       "Bash(ls:*)",
       "Bash(rm:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(npm install:*)",
+      "mcp__supabase__get_anon_key"
     ],
     "deny": []
   }
