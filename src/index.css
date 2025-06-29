@@ -1784,10 +1784,11 @@ body {
     min-height: 100dvh;
   }
 
-  /* Scale down the test tube */
+  /* Scale down the test tube and center it */
   .relative.inline-block.cursor-pointer {
     transform: scale(0.5);
-    margin: -40px 0;
+    margin: -40px auto;
+    display: block;
   }
 
   /* Main container adjustments */
@@ -1977,7 +1978,8 @@ body {
   /* Even smaller screens (iPhone SE, etc.) */
   .relative.inline-block.cursor-pointer {
     transform: scale(0.45);
-    margin: -45px 0;
+    margin: -45px auto;
+    display: block;
   }
 
   h1 {
