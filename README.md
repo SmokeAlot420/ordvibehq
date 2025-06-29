@@ -1,4 +1,4 @@
-# Welcome to your Lovable project
+# Welcome to your Alkanes project
 
 ## Project info
 
@@ -8,7 +8,7 @@
 
 There are several ways of editing your application.
 
-**Use Lovable**
+**Use your preferred method**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/31984c80-9073-4e3a-9a99-76ad161731d2) and start prompting.
 
