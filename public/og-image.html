@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      width: 1200px;
+      height: 630px;
+      background: #000;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .glow {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .content {
+      text-align: center;
+      z-index: 1;
+    }
+    
+    .terminal {
+      font-size: 48px;
+      color: white;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+    
+    .cursor {
+      color: #3b82f6;
+      opacity: 0.8;
+    }
+    
+    .function {
+      font-size: 32px;
+      color: #60a5fa;
+      opacity: 0.6;
+    }
+    
+    .tube {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.3;
+    }
+    
+    .tube-body {
+      width: 30px;
+      height: 50px;
+      border: 2px solid #3b82f6;
+      border-radius: 15px;
+      position: relative;
+    }
+    
+    .liquid {
+      position: absolute;
+      bottom: 5px;
+      left: 3px;
+      right: 3px;
+      height: 12px;
+      background: #3b82f6;
+      border-radius: 10px;
+      opacity: 0.5;
+    }
+    
+    .corner {
+      position: absolute;
+      font-size: 14px;
+      color: #3b82f6;
+      opacity: 0.3;
+    }
+    
+    .corner-left {
+      bottom: 20px;
+      left: 50px;
+    }
+    
+    .corner-right {
+      bottom: 20px;
+      right: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+  
+  <div class="content">
+    <div class="terminal">
+      <span class="cursor">&gt; </span>reaction imminent...
+    </div>
+    <div class="function">an alkanes.experiment( )</div>
+  </div>
+  
+  <div class="tube">
+    <div class="tube-body">
+      <div class="liquid"></div>
+    </div>
+  </div>
+  
+  <div class="corner corner-left">[ALKANES://PROTOCOL]</div>
+  <div class="corner corner-right">NODE:880000</div>
+</body>
+</html>
