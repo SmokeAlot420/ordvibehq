@@ -18,7 +18,8 @@
       "mcp__supabase__get_anon_key",
       "mcp__netlify__netlify-project-services",
       "WebFetch(domain:docs.anthropic.com)",
-      "mcp__brave-search__brave_web_search"
+      "mcp__brave-search__brave_web_search",
+      "WebFetch(domain:alkanes.build)"
     ],
     "deny": []
   }

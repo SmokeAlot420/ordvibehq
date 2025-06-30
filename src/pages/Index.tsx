@@ -147,7 +147,7 @@ const Index = () => {
                 <div className="alkanes-input-wrapper">
                   <Input
                     type="text"
-                    placeholder="@molecular_id"
+                    placeholder="@handle"
                     value={twitter}
                     onChange={(e) => setTwitter(e.target.value)}
                     className="alkanes-input"
@@ -166,7 +166,7 @@ const Index = () => {
                 <div className="alkanes-input-wrapper">
                   <Input
                     type="text"
-                    placeholder="bc1p carbon chain..."
+                    placeholder="taproot address (bc1p...)"
                     value={wallet}
                     onChange={(e) => setWallet(e.target.value)}
                     className="alkanes-input"
