@@ -187,7 +187,7 @@ const Index = () => {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="alkanes-submit-icon">
                   <path d="M17 7l-10 10M17 7h-8M17 7v8" />
                 </svg>
-                <span className="alkanes-submit-text">ignite alkane</span>
+                <span className="alkanes-submit-text">submit wallet</span>
               </Button>
             </div>
           </form>
