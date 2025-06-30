@@ -748,3 +748,20 @@ body {
 .animate-scan {
   animation: scan 3s linear infinite;
 }
+
+/* Music visualizer pulse animation */
+@keyframes musicPulse {
+  0%, 100% {
+    transform: scaleY(0.3);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Ambient music glow effect */
+.music-glow {
+  filter: drop-shadow(0 0 10px rgba(0, 255, 127, 0.5));
+}

@@ -27,7 +27,8 @@
       "Bash(do if ! grep -q \"^$file$\" ../../../keep_components.txt)",
       "Bash(then mv \"$file\" ../ui.backup/)",
       "Bash(fi)",
-      "Bash(done)"
+      "Bash(done)",
+      "mcp__context7__resolve-library-id"
     ],
     "deny": []
   }

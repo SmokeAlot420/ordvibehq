@@ -6,6 +6,7 @@ import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
 import WalletIcon from "@/components/ui/WalletIcon";
 import TerminalNotification from "@/components/TerminalNotification";
+import AmbientMusic from "@/components/AmbientMusic";
 import { AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 
@@ -107,6 +108,9 @@ const Index = () => {
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
       {/* Apple-quality Background Animation */}
       <AppleBackground />
+      
+      {/* Ambient Music */}
+      <AmbientMusic />
 
       {/* Content Overlay */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">
