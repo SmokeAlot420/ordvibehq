@@ -143,7 +143,7 @@ export default function AmbientMusic() {
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         >
-          <source src="/monoliths.mp3" type="audio/mpeg" />
+          <source src="/monoliths-compressed.mp3" type="audio/mpeg" />
           <source src="/monoliths.ogg" type="audio/ogg" />
         </audio>
       </button>

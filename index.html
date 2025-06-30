@@ -37,16 +37,25 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon.svg" />
     
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.4/build/spline-viewer.js"></script>
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z0VK3CTLJ6"></script>
+    <!-- Lazy load Google Analytics -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-Z0VK3CTLJ6');
+      window.addEventListener('load', () => {
+        const script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z0VK3CTLJ6';
+        script.async = true;
+        document.head.appendChild(script);
+        
+        script.onload = () => {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-Z0VK3CTLJ6');
+        };
+      });
     </script>
   </head>
 

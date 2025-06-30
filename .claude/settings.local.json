@@ -28,7 +28,8 @@
       "Bash(then mv \"$file\" ../ui.backup/)",
       "Bash(fi)",
       "Bash(done)",
-      "mcp__context7__resolve-library-id"
+      "mcp__context7__resolve-library-id",
+      "mcp__zen__chat"
     ],
     "deny": []
   }
