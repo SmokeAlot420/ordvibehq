@@ -5,32 +5,30 @@ import AnimatedTestTube from "@/components/AnimatedTestTube";
 import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
 import WalletIcon from "@/components/ui/WalletIcon";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
+import TerminalNotification from "@/components/TerminalNotification";
+import { AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
   const [twitter, setTwitter] = useState("");
-  const { toast } = useToast();
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!wallet.trim()) {
-      toast({
-        title: "catalyst missing",
-        description: "taproot address required for reaction",
-        variant: "destructive",
+      setNotification({ 
+        message: "catalyst missing: taproot address required for reaction", 
+        type: 'error' 
       });
       return;
     }
 
     if (!twitter.trim()) {
-      toast({
-        title: "identity missing",
-        description: "X handle required for verification",
-        variant: "destructive",
+      setNotification({ 
+        message: "identity missing: X handle required for verification", 
+        type: 'error' 
       });
       return;
     }
@@ -38,10 +36,9 @@ const Index = () => {
     // Basic Taproot address validation (starts with bc1p or tb1p for testnet)
     const taprootRegex = /^(bc1p|tb1p)[a-z0-9]{58,62}$/i;
     if (!taprootRegex.test(wallet.trim())) {
-      toast({
-        title: "unstable catalyst",
-        description: "invalid taproot structure (bc1p required)",
-        variant: "destructive",
+      setNotification({ 
+        message: "unstable catalyst: invalid taproot structure (bc1p required)", 
+        type: 'error' 
       });
       return;
     }
@@ -52,10 +49,9 @@ const Index = () => {
     // Basic Twitter handle validation
     const twitterRegex = /^[A-Za-z0-9_]{1,15}$/;
     if (!twitterRegex.test(cleanTwitter)) {
-      toast({
-        title: "invalid identifier",
-        description: "X handle must be 1-15 characters (letters, numbers, _)",
-        variant: "destructive",
+      setNotification({ 
+        message: "invalid identifier: X handle must be 1-15 characters (letters, numbers, _)", 
+        type: 'error' 
       });
       return;
     }
@@ -77,35 +73,32 @@ const Index = () => {
         // Check if it's a duplicate wallet or twitter error
         if (error.code === '23505') {
           if (error.message.includes('twitter_handle')) {
-            toast({
-              title: "identity collision",
-              description: "this X handle is already registered",
-              variant: "destructive",
+            setNotification({ 
+              message: "identity collision: this X handle is already registered", 
+              type: 'error' 
             });
           } else {
-            toast({
-              title: "reaction in progress",
-              description: "this catalyst is already active",
-              variant: "destructive",
+            setNotification({ 
+              message: "reaction in progress: this catalyst is already active", 
+              type: 'error' 
             });
           }
         } else {
           throw error;
         }
       } else {
-        toast({
-          title: "reaction initiated",
-          description: "catalyst added. chain reaction imminent...",
+        setNotification({ 
+          message: "reaction initiated: catalyst added. chain reaction imminent...", 
+          type: 'success' 
         });
         setWallet(""); // Clear the input fields
         setTwitter("");
       }
     } catch (error) {
       console.error("Error submitting wallet:", error);
-      toast({
-        title: "reaction unstable",
-        description: "chain reaction failed. try again",
-        variant: "destructive",
+      setNotification({ 
+        message: "reaction unstable: chain reaction failed. try again", 
+        type: 'error' 
       });
     }
   };
@@ -200,7 +193,16 @@ const Index = () => {
           </form>
         </div>
       </div>
-      <Toaster />
+      {/* Terminal-style notifications */}
+      <AnimatePresence>
+        {notification && (
+          <TerminalNotification
+            message={notification.message}
+            type={notification.type}
+            onComplete={() => setNotification(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
