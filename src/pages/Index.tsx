@@ -19,7 +19,7 @@ const Index = () => {
 
     if (!wallet.trim()) {
       setNotification({ 
-        message: "catalyst missing: taproot address required for reaction", 
+        message: "hydrocarbon incomplete: taproot catalyst required for ignition", 
         type: 'error' 
       });
       return;
@@ -27,7 +27,7 @@ const Index = () => {
 
     if (!twitter.trim()) {
       setNotification({ 
-        message: "identity missing: X handle required for verification", 
+        message: "molecular bond incomplete: X identifier required for chain linkage", 
         type: 'error' 
       });
       return;
@@ -37,7 +37,7 @@ const Index = () => {
     const taprootRegex = /^(bc1p|tb1p)[a-z0-9]{58,62}$/i;
     if (!taprootRegex.test(wallet.trim())) {
       setNotification({ 
-        message: "unstable catalyst: invalid taproot structure (bc1p required)", 
+        message: "combustion failed: invalid alkane structure (bc1p carbon chain required)", 
         type: 'error' 
       });
       return;
@@ -50,7 +50,7 @@ const Index = () => {
     const twitterRegex = /^[A-Za-z0-9_]{1,15}$/;
     if (!twitterRegex.test(cleanTwitter)) {
       setNotification({ 
-        message: "invalid identifier: X handle must be 1-15 characters (letters, numbers, _)", 
+        message: "isomer rejected: X compound must be 1-15 atoms (alphanumeric chains only)", 
         type: 'error' 
       });
       return;
@@ -74,12 +74,12 @@ const Index = () => {
         if (error.code === '23505') {
           if (error.message.includes('twitter_handle')) {
             setNotification({ 
-              message: "identity collision: this X handle is already registered", 
+              message: "molecular collision detected: X compound already bonded in chain", 
               type: 'error' 
             });
           } else {
             setNotification({ 
-              message: "reaction in progress: this catalyst is already active", 
+              message: "combustion ongoing: hydrocarbon already burning in the chain", 
               type: 'error' 
             });
           }
@@ -88,7 +88,7 @@ const Index = () => {
         }
       } else {
         setNotification({ 
-          message: "reaction initiated: catalyst added. chain reaction imminent...", 
+          message: "ignition successful: alkane combustion initiated. blue flame detected...", 
           type: 'success' 
         });
         setWallet(""); // Clear the input fields
@@ -97,7 +97,7 @@ const Index = () => {
     } catch (error) {
       console.error("Error submitting wallet:", error);
       setNotification({ 
-        message: "reaction unstable: chain reaction failed. try again", 
+        message: "combustion incomplete: hydrocarbon chain destabilized. retry ignition", 
         type: 'error' 
       });
     }
@@ -147,7 +147,7 @@ const Index = () => {
                 <div className="alkanes-input-wrapper">
                   <Input
                     type="text"
-                    placeholder="@handle"
+                    placeholder="@molecular_id"
                     value={twitter}
                     onChange={(e) => setTwitter(e.target.value)}
                     className="alkanes-input"
@@ -166,7 +166,7 @@ const Index = () => {
                 <div className="alkanes-input-wrapper">
                   <Input
                     type="text"
-                    placeholder="taproot address (bc1p...)"
+                    placeholder="bc1p carbon chain..."
                     value={wallet}
                     onChange={(e) => setWallet(e.target.value)}
                     className="alkanes-input"
@@ -187,7 +187,7 @@ const Index = () => {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="alkanes-submit-icon">
                   <path d="M17 7l-10 10M17 7h-8M17 7v8" />
                 </svg>
-                <span className="alkanes-submit-text">initialize reaction</span>
+                <span className="alkanes-submit-text">ignite alkane</span>
               </Button>
             </div>
           </form>
