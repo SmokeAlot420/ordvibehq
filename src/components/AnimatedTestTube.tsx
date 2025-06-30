@@ -79,7 +79,7 @@ const AnimatedTestTube = () => {
 
         {/* Main test tube container */}
         <motion.div
-          className="relative w-16 h-36 sm:w-20 sm:h-48 md:w-24 md:h-56"
+          className="relative w-24 h-52 sm:w-28 sm:h-64 md:w-32 md:h-72"
           animate={{ rotateY: [0, 10, -10, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -124,7 +124,7 @@ const AnimatedTestTube = () => {
 
             {/* Glass reflection */}
             <motion.div
-              className="absolute top-4 left-2 w-2 h-8 bg-gradient-to-b from-white/40 to-transparent rounded-full blur-sm"
+              className="absolute top-6 left-3 w-3 h-12 bg-gradient-to-b from-white/40 to-transparent rounded-full blur-sm"
               animate={{ opacity: [0.3, 0.6, 0.3] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -133,7 +133,7 @@ const AnimatedTestTube = () => {
             {[...Array(4)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1 h-1 bg-white/60 rounded-full"
+                className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/60 rounded-full"
                 style={{
                   left: `${30 + i * 12}%`,
                   bottom: `${20 + i * 8}%`
@@ -156,7 +156,7 @@ const AnimatedTestTube = () => {
             {[...Array(5)].map((_, i) => (
               <motion.div
                 key={`particle-${i}`}
-                className="absolute w-0.5 h-0.5 rounded-full hidden sm:block"
+                className="absolute w-1 h-1 rounded-full hidden sm:block"
                 style={{
                   background: isActive ? "rgba(0, 255, 127, 0.8)" : "rgba(0, 212, 255, 0.6)",
                   left: `${Math.random() * 80 + 10}%`,
@@ -192,7 +192,7 @@ const AnimatedTestTube = () => {
           {/* Dynamic mysterious message */}
           <motion.div
             key={currentMessage} // This makes it re-animate when message changes
-            className="absolute -right-24 sm:-right-32 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-cyan-300/80 font-mono whitespace-nowrap tracking-wider hidden sm:block"
+            className="absolute -right-28 sm:-right-36 md:-right-40 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-cyan-300/80 font-mono whitespace-nowrap tracking-wider hidden sm:block"
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
