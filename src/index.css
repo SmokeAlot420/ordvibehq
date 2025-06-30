@@ -507,8 +507,8 @@ body {
 
   /* Scale down the test tube and center it */
   .relative.inline-block.cursor-pointer {
-    transform: scale(0.5);
-    margin: -40px auto;
+    transform: scale(0.75);
+    margin: -20px auto;
     display: block;
   }
 
@@ -684,8 +684,8 @@ body {
 @media (max-width: 375px) {
   /* Even smaller screens (iPhone SE, etc.) */
   .relative.inline-block.cursor-pointer {
-    transform: scale(0.45);
-    margin: -45px auto;
+    transform: scale(0.65);
+    margin: -30px auto;
     display: block;
   }
 
