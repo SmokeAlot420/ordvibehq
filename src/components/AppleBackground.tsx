@@ -36,8 +36,9 @@ export default function AppleBackground() {
       'rgba(0, 212, 255, 0.02)',    // Cyan lighter
     ];
 
-    // Initialize particles
-    const particleCount = 120;
+    // Initialize particles - reduce on mobile for performance
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 40 : 80;
     for (let i = 0; i < particleCount; i++) {
       particlesRef.current.push({
         x: Math.random() * rect.width,
@@ -58,9 +59,21 @@ export default function AppleBackground() {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Animation loop
+    // Animation loop with frame rate limiting on mobile
     let animationId: number;
-    const animate = () => {
+    let lastTime = 0;
+    const targetFPS = isMobile ? 30 : 60;
+    const frameInterval = 1000 / targetFPS;
+    
+    const animate = (currentTime: number = 0) => {
+      const deltaTime = currentTime - lastTime;
+      
+      if (deltaTime < frameInterval) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+      
+      lastTime = currentTime;
       ctx.clearRect(0, 0, rect.width, rect.height);
 
       // Create subtle gradient background
