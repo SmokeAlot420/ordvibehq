@@ -66,10 +66,9 @@ const Index = () => {
       };
 
       // Insert the wallet address into Supabase
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('taproot_wallets')
-        .insert([walletData])
-        .select();
+        .insert([walletData]);
 
       if (error) {
         // Check if it's a duplicate wallet or twitter error
