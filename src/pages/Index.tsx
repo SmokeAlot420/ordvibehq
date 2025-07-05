@@ -9,6 +9,8 @@ import TerminalNotification from "@/components/TerminalNotification";
 import AmbientMusic from "@/components/AmbientMusic";
 import { AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
+import { ERROR_CODES, VALIDATION_PATTERNS } from "@/constants";
+import type { WalletSubmission } from "@/lib/database.types";
 
 const Index = () => {
   const [wallet, setWallet] = useState("");
@@ -35,8 +37,7 @@ const Index = () => {
     }
 
     // Basic Taproot address validation (starts with bc1p or tb1p for testnet)
-    const taprootRegex = /^(bc1p|tb1p)[a-z0-9]{58,62}$/i;
-    if (!taprootRegex.test(wallet.trim())) {
+    if (!VALIDATION_PATTERNS.TAPROOT_WALLET.test(wallet.trim())) {
       setNotification({ 
         message: "combustion failed: invalid alkane structure (bc1p carbon chain required)", 
         type: 'error' 
@@ -48,8 +49,7 @@ const Index = () => {
     const cleanTwitter = twitter.trim().replace(/^@/, '');
     
     // Basic Twitter handle validation
-    const twitterRegex = /^[A-Za-z0-9_]{1,15}$/;
-    if (!twitterRegex.test(cleanTwitter)) {
+    if (!VALIDATION_PATTERNS.TWITTER_HANDLE.test(cleanTwitter)) {
       setNotification({ 
         message: "isomer rejected: X compound must be 1-15 atoms (alphanumeric chains only)", 
         type: 'error' 
@@ -58,21 +58,22 @@ const Index = () => {
     }
 
     try {
+      // Prepare wallet submission data
+      const walletData: WalletSubmission = {
+        wallet_address: wallet.trim(),
+        twitter_handle: cleanTwitter,
+        user_agent: navigator.userAgent
+      };
+
       // Insert the wallet address into Supabase
       const { data, error } = await supabase
         .from('taproot_wallets')
-        .insert([
-          { 
-            wallet_address: wallet.trim(),
-            twitter_handle: cleanTwitter,
-            user_agent: navigator.userAgent
-          }
-        ])
+        .insert([walletData])
         .select();
 
       if (error) {
         // Check if it's a duplicate wallet or twitter error
-        if (error.code === '23505') {
+        if (error.code === ERROR_CODES.DUPLICATE_ENTRY) {
           if (error.message.includes('twitter_handle')) {
             setNotification({ 
               message: "molecular collision detected: X compound already bonded in chain", 
