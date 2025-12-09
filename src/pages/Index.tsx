@@ -17,7 +17,7 @@ const Index = () => {
         {/* Premium glow effect */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] opacity-20">
-            <div className="w-full h-full bg-gradient-radial from-white/5 via-transparent to-transparent rounded-full blur-3xl" />
+            <div className="w-full h-full bg-gradient-radial from-emerald-500/10 via-transparent to-transparent rounded-full blur-3xl" />
           </div>
         </div>
 
@@ -32,34 +32,37 @@ const Index = () => {
             <BioTerminal />
           </div>
 
-          {/* BitPlex Genesis Text */}
+          {/* BitPlex Genesis Text - with glitch effect */}
           <div className="mb-4 sm:mb-6">
-            <p className="text-[10px] sm:text-xs md:text-sm alkanes-text">
+            <p
+              className="text-[10px] sm:text-xs md:text-sm alkanes-text glitch-text"
+              data-text="BitPlex://genesis: activation sequence initiated"
+            >
               BitPlex://genesis: activation sequence initiated
             </p>
           </div>
 
-          {/* Whitelist Closed State - Terminal Style */}
+          {/* Whitelist Status - Terminal Style */}
           <div className="mt-4 sm:mt-6 md:mt-8 animate-fade-in animate-delay-2">
-            <div className="alkanes-form-container relative">
+            <div className="alkanes-form-container genesis-sealed relative data-stream">
               {/* Glow effect */}
               <div className="alkanes-form-glow" />
 
-              {/* Closed state content */}
-              <div className="alkanes-form-content py-6 space-y-2 text-left">
-                <p className="text-emerald-400 font-mono text-xs sm:text-sm">
-                  &gt; whitelist: SEALED
+              {/* Status content */}
+              <div className="alkanes-form-content py-6 space-y-2 text-left px-6">
+                <p className="text-emerald-400 font-mono text-xs sm:text-sm terminal-prompt">
+                  <span className="opacity-60">&gt;</span> whitelist: <span className="sealed-badge">loading</span><span className="blink-cursor"></span>
                 </p>
                 <p className="text-emerald-400/80 font-mono text-xs sm:text-sm">
-                  &gt; early birds: locked in
+                  <span className="opacity-60">&gt;</span> early birds: locked in
                 </p>
                 <p className="text-emerald-400/60 font-mono text-xs sm:text-sm">
-                  &gt; next phase: BitPlex genesis
+                  <span className="opacity-60">&gt;</span> next phase: BitPlex genesis
                 </p>
                 <div className="pt-4 flex justify-center gap-4 text-xs">
                   <a
                     href="https://twitter.com/OrdVibeHQ"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors hover:glow-text"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -68,7 +71,7 @@ const Index = () => {
                   <span className="text-gray-600">|</span>
                   <a
                     href="https://twitter.com/bitplx"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors hover:glow-text"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

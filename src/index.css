@@ -766,3 +766,245 @@ body {
 .music-glow {
   filter: drop-shadow(0 0 10px rgba(0, 255, 127, 0.5));
 }
+
+/* ========================================
+   GENESIS CHAMBER EFFECTS
+   ======================================== */
+
+/* CRT Scan Lines Overlay */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.03) 0px,
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+/* Flicker effect for CRT authenticity */
+.crt-flicker {
+  animation: crtFlicker 0.15s infinite;
+}
+
+@keyframes crtFlicker {
+  0% { opacity: 0.97; }
+  50% { opacity: 1; }
+  100% { opacity: 0.98; }
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Cyberpunk data transmission tagline */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+  background: linear-gradient(
+    90deg,
+    #34d399 0%,
+    #5eead4 25%,
+    #34d399 50%,
+    #10b981 75%,
+    #34d399 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: dataFlow 8s linear infinite;
+  text-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+}
+
+.glitch-text::before {
+  content: '//';
+  position: relative;
+  margin-right: 6px;
+  -webkit-text-fill-color: #0d9488;
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+@keyframes dataFlow {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Genesis sealed container - pulsing border glow */
+.genesis-sealed {
+  position: relative;
+  overflow: visible;
+}
+
+.genesis-sealed::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(52, 211, 153, 0.5) 50%,
+    transparent 70%
+  );
+  border-radius: 26px;
+  animation: borderScan 3s linear infinite;
+  z-index: -1;
+}
+
+@keyframes borderScan {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Blinking cursor effect */
+.blink-cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: #34d399;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Data stream effect on hover */
+.data-stream {
+  position: relative;
+  overflow: hidden;
+}
+
+.data-stream::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(52, 211, 153, 0.1),
+    transparent
+  );
+  animation: dataStream 2s linear infinite;
+}
+
+@keyframes dataStream {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Vignette effect for depth */
+.vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 998;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/* Terminal prompt styling */
+.terminal-prompt {
+  color: #34d399;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
+}
+
+/* Glow text effect */
+.glow-text {
+  text-shadow:
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor;
+}
+
+/* Sealed badge animation */
+.sealed-badge {
+  display: inline-block;
+  animation: sealedPulse 2s ease-in-out infinite;
+}
+
+@keyframes sealedPulse {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(52, 211, 153, 0.5);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(52, 211, 153, 0.8),
+      0 0 20px rgba(52, 211, 153, 0.5),
+      0 0 30px rgba(52, 211, 153, 0.3);
+  }
+}
+
+/* Matrix rain effect container */
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.03;
+  background:
+    linear-gradient(180deg,
+      transparent 0%,
+      rgba(52, 211, 153, 0.1) 50%,
+      transparent 100%
+    );
+  background-size: 100% 4px;
+  animation: matrixScroll 20s linear infinite;
+}
+
+@keyframes matrixScroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100vh; }
+}
+
+/* Holographic shimmer for special elements */
+.holo-shimmer {
+  background: linear-gradient(
+    135deg,
+    rgba(52, 211, 153, 0.1) 0%,
+    rgba(34, 211, 238, 0.1) 25%,
+    rgba(168, 85, 247, 0.1) 50%,
+    rgba(34, 211, 238, 0.1) 75%,
+    rgba(52, 211, 153, 0.1) 100%
+  );
+  background-size: 400% 400%;
+  animation: holoShift 8s ease infinite;
+}
+
+@keyframes holoShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
