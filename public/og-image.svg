@@ -30,7 +30,7 @@
     
     <!-- Function call below -->
     <text x="400" y="350" font-size="32" fill="#60a5fa" opacity="0.6">
-      an alkanes.experiment( )
+      BitPlex://genesis: activation sequence initiated
     </text>
   </g>
   
@@ -41,6 +41,6 @@
   </g>
   
   <!-- Minimal corner text -->
-  <text x="50" y="580" font-family="monospace" font-size="14" fill="#3b82f6" opacity="0.3">[ALKANES://PROTOCOL]</text>
+  <text x="50" y="580" font-family="monospace" font-size="14" fill="#3b82f6" opacity="0.3">[BITPLEX://SPARK]</text>
   <text x="1150" y="580" font-family="monospace" font-size="14" fill="#3b82f6" opacity="0.3" text-anchor="end">NODE:880000</text>
 </svg>

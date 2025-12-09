@@ -1,4 +1,4 @@
-// Chemistry-themed messages for Alkanes protocol
+// Chemistry-themed messages (legacy - form is closed)
 export const CHEMISTRY_MESSAGES = {
   // Success messages
   success: [

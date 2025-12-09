@@ -12,10 +12,10 @@ const AnimatedTestTube = () => {
     "verifiably scarce", "permanently stored", "provably unique", "digital antiquity"
   ];
 
-  const alkanesMessages = [
+  const reactionMessages = [
     "reaction bubbling", "elements combusting", "chains forming", "catalyst igniting",
     "hydrocarbon chains forming", "covalent bonds strengthening", "polymerization in progress",
-    "alkane synthesis", "catalytic conversion", "fractional distillation", "molecular bonding"
+    "genesis synthesis", "catalytic conversion", "fractional distillation", "molecular bonding"
   ];
 
   const processMessages = [
@@ -40,8 +40,15 @@ const AnimatedTestTube = () => {
     "pay attention", "no promises", "iykyk", "trust the process"
   ];
 
+  const genesisMessages = [
+    "stored forever", "permanent record", "immutable state", "genesis block",
+    "origin sequence", "artifacts preserved", "data crystallized", "etched in stone",
+    "protocol handshake", "network primed", "consensus forming", "settlement pending",
+    "layer 2 active", "lightning compatible", "self-custodial", "trustless storage"
+  ];
+
   const randomMessage = () => {
-    const allArrays = [ordinalsMessages, alkanesMessages, processMessages, mysteryMessages, degenMessages];
+    const allArrays = [ordinalsMessages, reactionMessages, processMessages, mysteryMessages, degenMessages, genesisMessages];
     const randomArray = allArrays[Math.floor(Math.random() * allArrays.length)];
     return randomArray[Math.floor(Math.random() * randomArray.length)];
   };
