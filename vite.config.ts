@@ -6,6 +6,19 @@ export default defineConfig({
   server: {
     host: "::",
     port: 7777,
+    proxy: {
+      // Proxy Netlify function path to Flashnet API in development
+      "/.netlify/functions/flashnet-proxy": {
+        target: "https://api.amm.flashnet.xyz",
+        changeOrigin: true,
+        rewrite: (path) => {
+          // Extract the 'path' query param and use it as the actual path
+          const url = new URL(path, "http://localhost");
+          const apiPath = url.searchParams.get("path") || "/v1/pools";
+          return apiPath;
+        },
+      },
+    },
   },
   plugins: [
     react(),

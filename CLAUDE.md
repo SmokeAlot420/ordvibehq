@@ -2,18 +2,35 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+
+## Task Management
+
+**CRITICAL: Use Archon MCP server for all task management instead of TodoWrite.**
+
+Follow the rules in `.claude/archon_rules.md` for the mandatory task-driven development workflow:
+1. Check current tasks with `find_tasks()`
+2. Mark task as doing before starting work
+3. Research using RAG tools if needed
+4. Implement changes
+5. Mark task for review when complete
+
 ## Project Overview
 
-**OrdVibeHQ / VibeCoders** - A BitPlex experiment on Spark (Bitcoin L2). Genesis NFT collection launching on BitPlex with permanent Arweave storage.
+**BitPlex Dashboard** - Full-featured Spark L2 DEX dashboard with real-time trading data.
 
-**Current Status**: Whitelist closed (~900 wallets collected). Site now displays "whitelist sealed" state.
+**Current Status**: Dashboard fully functional with real Flashnet API integration.
+
+**Features:**
+- **Dashboard Shell**: Sidebar navigation, cyberpunk terminal aesthetic
+- **Holder Analytics**: Top holders, distribution charts, Sparkscan API
+- **Trading Terminal**: TradingView charts (lightweight-charts), top movers, pools table
+- **SparkSwap**: Production-ready swap interface with Flashnet AMM
+- **Wallet Integration**: Xverse/Sats Connect with extension detection
 
 **Tech Context**:
-- **BitPlex**: NFT protocol on Spark with Arweave permanence
 - **Spark**: Bitcoin L2 for instant, self-custodial transactions
-- **Arweave**: Permanent decentralized storage for NFT metadata/media
-
-**Note**: Alkanes (Bitcoin L1 metaprotocol) experiments are still cooking in the background - different lane, same mission.
+- **Flashnet**: AMM DEX on Spark (api.amm.flashnet.xyz)
+- **Sparkscan**: Block explorer API for holder data
 
 ## Commands
 
@@ -30,29 +47,44 @@ npm run preview   # Preview production build
 - **React 18 + TypeScript + Vite** (SWC compiler)
 - **Tailwind CSS** + shadcn/ui components
 - **Framer Motion** for animations
-- **Supabase** for waitlist storage (legacy - form now closed)
-- **React Query** for server state
+- **React Query** (@tanstack/react-query) for server state
 - **React Router v6** for routing
+- **lightweight-charts** for TradingView-style charts
+- **Sats Connect** for Xverse wallet integration
+- **Netlify Functions** for serverless API proxy
 
 ## Architecture
 
+### Route Structure
+```
+/                    → Splash page with ENTER TERMINAL button
+/dashboard           → Dashboard overview (default)
+/dashboard/holders   → Holder analytics
+/dashboard/trading   → TradingView charts + top movers
+/dashboard/swap      → SparkSwap interface
+```
+
 ### Key Files
-- `src/pages/Index.tsx` - Main landing page (whitelist closed state)
-- `src/components/AnimatedTestTube.tsx` - Hero animation with rotating messages
-- `src/components/BioTerminal.tsx` - Terminal-style status display `[BITPLEX://SPARK]`
-- `src/components/AppleBackground.tsx` - Particle system background
-- `src/components/AmbientMusic.tsx` - Background audio player
+- `src/pages/Index.tsx` - Splash page with ENTER TERMINAL button
+- `src/pages/Dashboard.tsx` - Dashboard layout with nested routes
+- `src/components/dashboard/` - All dashboard view components
+- `src/components/SparkSwap.tsx` - Main swap orchestration (197 lines)
+- `src/components/spark-swap/` - Modular swap sub-components
+
+### API Integration
+- `src/lib/flashnet.ts` - Flashnet AMM API client (pools, swaps, OHLCV)
+- `src/lib/sparkscan.ts` - Sparkscan API client (holders, transactions)
+- `src/hooks/useFlashnet.ts` - React Query hooks for Flashnet
+- `src/hooks/useSparkscan.ts` - React Query hooks for Sparkscan
+- `src/hooks/useSparkWallet.ts` - Xverse wallet integration
+
+### Netlify Functions
+- `netlify/functions/flashnet-proxy.ts` - CORS proxy for Flashnet API
 
 ### Visual Components
-- Test tube animation with chemistry/genesis themed messages
-- Terminal aesthetic with emerald green accents
-- Glass morphism UI elements
-
-### Legacy (Form Closed)
-- `src/lib/supabase.ts` - Typed Supabase client
-- `src/lib/database.types.ts` - Database schema types
-- `src/constants/index.ts` - Validation patterns (no longer used)
-- `src/constants/chemistryMessages.ts` - Chemistry-themed messages
+- Terminal aesthetic with emerald green (#34d399) accents
+- Cyberpunk styling throughout
+- lightweight-charts for TradingView-style charts
 
 ## Path Aliases
 

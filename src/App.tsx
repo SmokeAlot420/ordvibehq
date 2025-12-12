@@ -6,6 +6,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import {
+  DashboardLayout,
+  OverviewView,
+  HoldersView,
+  TradingView,
+  SwapView,
+} from "./components/dashboard";
 
 // Configure QueryClient with optimized defaults
 const queryClient = new QueryClient({
@@ -24,6 +31,28 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Index />,
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <OverviewView />,
+      },
+      {
+        path: "holders",
+        element: <HoldersView />,
+      },
+      {
+        path: "trading",
+        element: <TradingView />,
+      },
+      {
+        path: "swap",
+        element: <SwapView />,
+      },
+    ],
   },
   {
     path: "*",

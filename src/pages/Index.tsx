@@ -1,9 +1,14 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import AnimatedTestTube from "@/components/AnimatedTestTube";
 import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
 import AmbientMusic from "@/components/AmbientMusic";
+import SparkSwap from "@/components/SparkSwap";
 
 const Index = () => {
+  const [showSwap, setShowSwap] = useState(false);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
       {/* Apple-quality Background Animation */}
@@ -81,6 +86,91 @@ const Index = () => {
               </div>
             </div>
           </div>
+
+          {/* ENTER TERMINAL Button */}
+          <div className="mt-8 animate-fade-in animate-delay-3">
+            <Link
+              to="/dashboard"
+              className="enter-terminal-btn group"
+            >
+              <span className="btn-bracket">[</span>
+              <span className="btn-text">ENTER_TERMINAL</span>
+              <span className="btn-bracket">]</span>
+              <span className="btn-arrow group-hover:translate-x-1 transition-transform">→</span>
+            </Link>
+          </div>
+
+          {/* Spark Swap Toggle */}
+          <div className="mt-4 animate-fade-in animate-delay-3">
+            <button
+              onClick={() => setShowSwap(!showSwap)}
+              className="text-emerald-400/40 hover:text-emerald-400/80 font-mono text-xs transition-all duration-300 flex items-center gap-2 mx-auto"
+            >
+              <span className="opacity-60">&gt;</span>
+              {showSwap ? "hide swap interface" : "quick swap"}
+              <span className="text-xs">{showSwap ? "[-]" : "[+]"}</span>
+            </button>
+          </div>
+
+          {/* Spark Swap Interface */}
+          {showSwap && (
+            <div className="mt-4 animate-fade-in w-full max-w-md mx-auto">
+              <SparkSwap />
+            </div>
+          )}
+
+          {/* Terminal Button Styles */}
+          <style>{`
+            .enter-terminal-btn {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 16px 32px;
+              background: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
+              border: 2px solid rgba(52, 211, 153, 0.5);
+              color: #34d399;
+              font-family: 'JetBrains Mono', 'Fira Code', monospace;
+              font-size: 14px;
+              font-weight: 700;
+              letter-spacing: 2px;
+              text-decoration: none;
+              transition: all 0.3s ease;
+              position: relative;
+              overflow: hidden;
+            }
+
+            .enter-terminal-btn::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.2), transparent);
+              transition: left 0.5s ease;
+            }
+
+            .enter-terminal-btn:hover::before {
+              left: 100%;
+            }
+
+            .enter-terminal-btn:hover {
+              background: linear-gradient(135deg, rgba(52, 211, 153, 0.3) 0%, rgba(16, 185, 129, 0.2) 100%);
+              border-color: rgba(52, 211, 153, 0.8);
+              box-shadow:
+                0 0 30px rgba(52, 211, 153, 0.3),
+                inset 0 0 20px rgba(52, 211, 153, 0.1);
+              transform: translateY(-2px);
+            }
+
+            .btn-bracket {
+              opacity: 0.5;
+            }
+
+            .btn-arrow {
+              margin-left: 4px;
+            }
+          `}</style>
         </div>
       </div>
     </div>
