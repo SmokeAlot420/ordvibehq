@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { RpcErrorCode } from "sats-connect";
 
 // Xverse wallet install URL
 export const XVERSE_INSTALL_URL = "https://www.xverse.app/download";
@@ -14,6 +15,7 @@ interface UseSparkWalletReturn extends WalletState {
   connect: () => Promise<void>;
   disconnect: () => void;
   getBalance: () => Promise<number | null>;
+  signMessage: (message: string) => Promise<string>;
   isConnecting: boolean;
   error: string | null;
   isExtensionInstalled: boolean;
@@ -66,18 +68,47 @@ export function useSparkWallet(): UseSparkWalletReturn {
 
     try {
       const { request } = await import("sats-connect");
-      const response = await request("spark_getBalance" as any, {});
+      const response = await request("spark_getBalance", undefined);
 
       if (response.status === "success" && response.result) {
-        const result = response.result as { balance: number };
-        setState((prev) => ({ ...prev, balance: result.balance }));
-        return result.balance;
+        // Balance is returned as string (bigint), store as-is
+        const { balance } = response.result;
+        setState((prev) => ({ ...prev, balance: parseFloat(balance) }));
+        return parseFloat(balance);
       }
     } catch (err) {
       console.error("Failed to get balance:", err);
     }
     return null;
   }, [state.isConnected]);
+
+  // Sign message function for authentication
+  const signMessage = useCallback(async (message: string): Promise<string> => {
+    if (!state.isConnected) {
+      throw new Error("Wallet not connected");
+    }
+
+    try {
+      const { request } = await import("sats-connect");
+      const response = await request("spark_signMessage", {
+        message
+      });
+
+      if (response.status === "success" && response.result) {
+        return response.result.signature;
+      } else if (response.status === "canceled") {
+        throw new Error("Signature rejected by user");
+      } else if (response.status === "error") {
+        throw new Error(response.error.message || "Signing failed");
+      } else {
+        throw new Error("Unknown signing error");
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error signing message";
+      console.error("Message signing error:", err);
+      throw new Error(message);
+    }
+  }, [state.isConnected, state.address]);
 
   const connect = useCallback(async () => {
     setIsConnecting(true);
@@ -94,26 +125,41 @@ export function useSparkWallet(): UseSparkWalletReturn {
       // Dynamic import to avoid SSR issues
       const { request } = await import("sats-connect");
 
-      const response = await request("spark_connect" as any, {
+      const response = await request("wallet_connect", {
+        addresses: ['spark'],
         message: "Connect to BitPlex DEX",
+        network: 'Mainnet'
       });
 
       if (response.status === "success" && response.result) {
-        const result = response.result as { sparkAddress: string; publicKey: string };
-        setState({
-          address: result.sparkAddress,
-          publicKey: result.publicKey,
-          isConnected: true,
-          balance: null,
-        });
-        // Auto-fetch balance after successful connection
-        setTimeout(() => getBalance(), 100);
+        // Find Spark address in the returned addresses array
+        const sparkAddr = response.result.addresses.find(
+          (addr: { purpose: string }) => addr.purpose === "spark"
+        );
+
+        if (sparkAddr) {
+          setState({
+            address: sparkAddr.address,
+            publicKey: sparkAddr.publicKey,
+            isConnected: true,
+            balance: null,
+          });
+          // Auto-fetch balance after successful connection
+          setTimeout(() => getBalance(), 100);
+        } else {
+          throw new Error("No Spark address returned from wallet");
+        }
       } else if (response.status === "canceled") {
         setError("Connection rejected by user");
-      } else {
-        // Extract error message if available
-        const errMsg = (response as any).error?.message || "Connection failed";
-        throw new Error(errMsg);
+      } else if (response.status === "error") {
+        // Use proper error handling with RpcErrorCode
+        if (response.error.code === RpcErrorCode.USER_REJECTION) {
+          setError("Connection rejected by user");
+        } else if (response.error.code === RpcErrorCode.ACCESS_DENIED) {
+          setError("Access denied - please check wallet permissions");
+        } else {
+          setError(`Connection failed: ${response.error.message}`);
+        }
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
@@ -149,6 +195,7 @@ export function useSparkWallet(): UseSparkWalletReturn {
     connect,
     disconnect,
     getBalance,
+    signMessage,
     isConnecting,
     error,
     isExtensionInstalled,

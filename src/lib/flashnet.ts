@@ -6,13 +6,35 @@
  * API Base: https://api.amm.flashnet.xyz
  */
 
+import { flashnetAuth } from "./auth";
+
 // Constants
 export const BTC_ASSET_PUBKEY = "020202020202020202020202020202020202020202020202020202020202020202";
 export const FLASHNET_API_BASE = "https://api.amm.flashnet.xyz";
 
-// Use Netlify proxy in production to bypass CORS, direct API in dev with proxy
-const USE_PROXY = true; // Always use proxy to avoid CORS issues
-const PROXY_ENDPOINT = "/.netlify/functions/flashnet-proxy";
+/**
+ * Proxy endpoint selection strategy:
+ * 1. Use VITE_FLASHNET_PROXY_URL if explicitly set (for testing/override)
+ * 2. In production, use Cloudflare Worker (bypasses CF bot detection)
+ * 3. In development, use Netlify function via Vite proxy
+ */
+const getProxyEndpoint = (): string => {
+  // Explicit override (for testing different proxies)
+  if (import.meta.env.VITE_FLASHNET_PROXY_URL) {
+    return import.meta.env.VITE_FLASHNET_PROXY_URL;
+  }
+
+  // Production: Use Cloudflare Worker to bypass bot detection
+  if (import.meta.env.PROD) {
+    return 'https://flashnet-proxy.degensmoke.workers.dev';
+  }
+
+  // Development: Use Netlify function via Vite proxy
+  return '/.netlify/functions/flashnet-proxy';
+};
+
+const PROXY_ENDPOINT = getProxyEndpoint();
+const USE_PROXY = true; // Enable proxy with authentication
 
 // Environment flag for development mode
 const USE_MOCK_DATA = import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_DATA === "true";
@@ -67,6 +89,7 @@ export interface SwapParams {
   assetOutPublicKey: string;
   amountIn: bigint;
   slippageBps: number;
+  userPublicKey: string; // Required for swap execution
 }
 
 export interface SwapResult {
@@ -213,6 +236,9 @@ export function formatPercentage(value: number): string {
 // ============================================================================
 
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
+  // Get valid auth token (will refresh if needed)
+  const token = await flashnetAuth.getValidToken();
+
   // Use proxy to bypass CORS, or direct API if proxy disabled
   const url = USE_PROXY
     ? `${PROXY_ENDPOINT}?path=${encodeURIComponent(endpoint)}`
@@ -223,9 +249,16 @@ async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> 
       ...options,
       headers: {
         "Content-Type": "application/json",
+        ...(token && { "Authorization": `Bearer ${token}` }),
         ...options?.headers,
       },
     });
+
+    // Handle 401 - token expired or invalid
+    if (response.status === 401) {
+      flashnetAuth.clearAuth();
+      throw new Error("Authentication required - please reconnect your wallet");
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -480,13 +513,16 @@ export async function executeSwap(params: SwapParams): Promise<SwapResult> {
 
     const { request } = await import("sats-connect");
 
-    const response = await request("spark_flashnet_executeSwap" as any, {
+    const response = await request("spark_flashnet_executeSwap", {
       poolId: params.poolId,
-      assetInTokenPublicKey: params.assetInPublicKey,
-      assetOutTokenPublicKey: params.assetOutPublicKey,
+      assetInAddress: params.assetInPublicKey,
+      assetOutAddress: params.assetOutPublicKey,
       amountIn: params.amountIn.toString(),
       minAmountOut: quote.minimumAmountOut.toString(),
       maxSlippageBps: params.slippageBps,
+      userPublicKey: params.userPublicKey,
+      totalIntegratorFeeRateBps: 0, // No partnership - basic swap
+      integratorPublicKey: params.userPublicKey, // Use user's key as fallback
     });
 
     if (response.status === "success") {

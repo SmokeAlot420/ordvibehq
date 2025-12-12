@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSparkWallet } from "@/hooks/useSparkWallet";
 import { usePools, useSwapQuote, useExecuteSwap, type Pool } from "@/hooks/useFlashnet";
 import { parseTokenAmount } from "@/lib/flashnet";
+import { flashnetAuth } from "@/lib/auth";
 import {
   SwapHeader,
   SwapConnectGate,
@@ -21,9 +22,11 @@ import {
 export default function SparkSwap() {
   const {
     address,
+    publicKey,
     isConnected,
     connect,
     disconnect,
+    signMessage,
     isConnecting,
     error: walletError,
     isExtensionInstalled,
@@ -86,6 +89,23 @@ export default function SparkSwap() {
     }
   }, [isConnected]);
 
+  // Auto-authenticate with Flashnet API when wallet connects
+  useEffect(() => {
+    if (isConnected && publicKey && signMessage) {
+      console.log("[SparkSwap] Wallet connected, authenticating with Flashnet...");
+      flashnetAuth.authenticate(publicKey, signMessage)
+        .then(() => {
+          console.log("[SparkSwap] Flashnet authentication successful");
+        })
+        .catch((err) => {
+          console.error("[SparkSwap] Flashnet authentication failed:", err);
+        });
+    } else if (!isConnected) {
+      // Clear auth when wallet disconnects
+      flashnetAuth.clearAuth();
+    }
+  }, [isConnected, publicKey, signMessage]);
+
   const handlePoolSelect = useCallback((pool: Pool | null) => {
     setSelectedPool(pool);
     setAmountIn("");
@@ -93,6 +113,10 @@ export default function SparkSwap() {
 
   const handleSwap = useCallback(async () => {
     if (!selectedPool || !tokenIn || !tokenOut || !amountIn || !quote) return;
+    if (!publicKey) {
+      setSwapResult({ success: false, error: "Wallet not connected" });
+      return;
+    }
 
     setSwapResult(null);
 
@@ -103,6 +127,7 @@ export default function SparkSwap() {
         assetOutPublicKey: tokenOut.publicKey,
         amountIn: parseTokenAmount(amountIn, tokenIn.decimals),
         slippageBps,
+        userPublicKey: publicKey,
       });
 
       setSwapResult(result);
@@ -115,7 +140,7 @@ export default function SparkSwap() {
         error: err instanceof Error ? err.message : "Swap execution failed",
       });
     }
-  }, [selectedPool, tokenIn, tokenOut, amountIn, quote, slippageBps, executeSwapMutation]);
+  }, [selectedPool, tokenIn, tokenOut, amountIn, quote, slippageBps, publicKey, executeSwapMutation]);
 
   const toggleDirection = () => {
     setSwapDirection((prev) => (prev === "AtoB" ? "BtoA" : "AtoB"));

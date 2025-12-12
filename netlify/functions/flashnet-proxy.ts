@@ -42,12 +42,26 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 
     console.log(`[flashnet-proxy] Proxying request to: ${url}`);
 
-    // Forward the request to Flashnet API
+    // Forward the request to Flashnet API with browser-like headers to bypass Cloudflare
     const response = await fetch(url, {
       method: event.httpMethod,
       headers: {
+        // Browser identification (bypasses Cloudflare bot detection)
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
         "Content-Type": "application/json",
-        "Accept": "application/json",
+
+        // Make request appear to originate from flashnet.xyz
+        "Origin": "https://flashnet.xyz",
+        "Referer": "https://flashnet.xyz/",
+
+        // CORS security headers
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+
         // Forward authorization if present
         ...(event.headers.authorization && {
           "Authorization": event.headers.authorization
