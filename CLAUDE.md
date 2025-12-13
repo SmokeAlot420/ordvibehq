@@ -81,7 +81,12 @@ npm run preview   # Preview production build
   - Modular approach: `ApiClient` + `AuthManager` + `TypedAmmApi`
   - Custom signer for Xverse wallet (converts hex ↔ Uint8Array)
   - Bypasses Cloudflare blocking via SDK's built-in API client
+  - **Token Metadata**: ✅ Cached from Sparksat token list (14 tokens: SNOW, USDB, FSPKS, etc.)
+    - Source: https://sparksat.app/sparksat.json
+    - Falls back to address prefix for unknown tokens
+    - Includes name, ticker, decimals, logoUrl for each token
   - **Status**: ✅ Pool fetching working (100 pools, 3,742 total)
+  - **Status**: ✅ Token names displaying correctly (SNOW/BTC instead of address prefixes)
   - **Known issue**: Authentication signer needs debugging for swap execution
   - **Docs**: https://www.npmjs.com/package/@flashnet/sdk
 

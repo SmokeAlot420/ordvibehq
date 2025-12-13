@@ -36,10 +36,55 @@ export interface Token {
   logoUrl?: string;
 }
 
-// Token metadata cache (expand as we discover more tokens)
+// Token metadata cache (populated from Sparksat token list)
 const TOKEN_METADATA: Record<string, Partial<Token>> = {
+  // BTC
   [BTC_ASSET_PUBKEY]: { name: "Bitcoin", ticker: "BTC", decimals: 8 },
   btc: { name: "Bitcoin", ticker: "BTC", decimals: 8 },
+
+  // Sparksat token list (https://sparksat.app/sparksat.json)
+  "btkn1f0wpf28xhs6sswxkthx9fzrv2x9476yk95wlucp4sfuqmxnu8zesv2gsws": {
+    name: "Snowflake", ticker: "SNOW", decimals: 8, logoUrl: "https://sparksat.app/token-logo/snow.png"
+  },
+  "btkn1daywtenlww42njymqzyegvcwuy3p9f26zknme0srxa7tagewvuys86h553": {
+    name: "FlashSparks", ticker: "FSPKS", decimals: 8, logoUrl: "https://sparksat.app/token-logo/fspk.jpg"
+  },
+  "btkn1msfdnsk3z5slndkj5tal5f0hf3yehtfkd8cepy2vuhl7grhle08q7wcjj0": {
+    name: "LRC-20", ticker: "LRC20", decimals: 8, logoUrl: "https://i.imgur.com/SfMhdPA.png"
+  },
+  "btkn1slgqpjy3dtz833ttrnxrm0zsq0859tm2qkup53ftec32qhafsn3sqz3vxg": {
+    name: "Aurora", ticker: "AURORA", decimals: 8, logoUrl: "https://i.imgur.com/HKKsC4u.png"
+  },
+  "btkn1pzvck7xzt96vj4h9agnyu493t7a9jdc4v3j2z3n3fs4cwlcq9yps2zgm4z": {
+    name: "UTXO", ticker: "UTXO", decimals: 6, logoUrl: "https://i.imgur.com/JwtvCiV.png"
+  },
+  "btkn1ktpx7dlydsvjzdu44kf7mvxj8e0wcyds7tsevpz66dxptlu4fpzsc8s0av": {
+    name: "Akita Mia", ticker: "AKITA", decimals: 6, logoUrl: "https://i.imgur.com/xEO4EDU.png"
+  },
+  "btkn1zlzhrcx4x947tfg3kwkya35uhue0ha9hg63jfk7a322v2la0uktqaszwne": {
+    name: "Toto", ticker: "TOTO", decimals: 6, logoUrl: "https://i.imgur.com/7QkHwPT.png"
+  },
+  "btkn12dntujxk024gt53hzykn5zftq6yqz7x9ap8qssjs04kxc42q4lrqqhsfeh": {
+    name: "bits", ticker: "BIT", decimals: 8, logoUrl: "https://sparksat.app/token-logo/bits.jpg"
+  },
+  "btkn1qfdgjy5ucgyyzepf5dm65dk2vthv2rwzr6w7jy8p0tpycr5ux3dqyreuvj": {
+    name: "TeleSpark", ticker: "TSPK", decimals: 8, logoUrl: "https://i.imgur.com/oatecsI.png"
+  },
+  "btkn13d3agsc26ll9u0z33tc2mh9pch93stq6wajlmwee6r738mg26mls3huvhu": {
+    name: "OrdiBird", ticker: "BIRD", decimals: 6, logoUrl: "https://i.imgur.com/3AzqpxM.png"
+  },
+  "btkn1s3nmp3akl907z6u58zlvyfxnjevf0g23aqscg3n9petmwu0ptk3qht93rs": {
+    name: "SparkCpuMinging", ticker: "SCPUM", decimals: 8, logoUrl: "https://i.imgur.com/h9iVuG2.jpeg"
+  },
+  "btkn1ry6m96kzn3tyefrcj76s2vpcg080wkttjhynu0svsvl892h4uumqkltg39": {
+    name: "HOP", ticker: "HOP", decimals: 8, logoUrl: "https://i.imgur.com/GJOmkvn.jpeg"
+  },
+  "btkn1dywglzsxyaxx69u4dchyz9vnt4gpmp0w26f3n5st2rslusv4kv7szrrwzm": {
+    name: "XSpark", ticker: "XSPK", decimals: 8, logoUrl: "https://i.imgur.com/hAMzvju.png"
+  },
+  "btkn1xgrvjwey5ngcagvap2dzzvsy4uk8ua9x69k82dwvt5e7ef9drm9qztux87": {
+    name: "USD Bitcoin", ticker: "USDB", decimals: 6, logoUrl: "https://flashnet.xyz/images/usdb-full.svg"
+  },
 };
 
 /**
