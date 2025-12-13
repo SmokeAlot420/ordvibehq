@@ -18,14 +18,15 @@ Follow the rules in `.claude/archon_rules.md` for the mandatory task-driven deve
 
 **BitPlex Dashboard** - Full-featured Spark L2 DEX dashboard with real-time trading data.
 
-**Current Status**: Dashboard fully functional with real Flashnet API integration.
+**Current Status**: Dashboard fully functional with real Flashnet API integration and working wallet connection.
 
 **Features:**
 - **Dashboard Shell**: Sidebar navigation, cyberpunk terminal aesthetic
 - **Holder Analytics**: Top holders, distribution charts, Sparkscan API
 - **Trading Terminal**: TradingView charts (lightweight-charts), top movers, pools table
 - **SparkSwap**: Production-ready swap interface with Flashnet AMM
-- **Wallet Integration**: Xverse/Sats Connect with extension detection
+- **Wallet Integration**: ✅ FIXED - Xverse wallet connects via `wallet_connect` method
+- **Authentication**: Challenge-response flow with JWT tokens for Flashnet API
 
 **Tech Context**:
 - **Spark**: Bitcoin L2 for instant, self-custodial transactions
@@ -73,13 +74,32 @@ npm run preview   # Preview production build
 
 ### API Integration
 - `src/lib/flashnet.ts` - Flashnet AMM API client (pools, swaps, OHLCV)
+- `src/lib/auth.ts` - Flashnet authentication (challenge-response, JWT management)
 - `src/lib/sparkscan.ts` - Sparkscan API client (holders, transactions)
 - `src/hooks/useFlashnet.ts` - React Query hooks for Flashnet
 - `src/hooks/useSparkscan.ts` - React Query hooks for Sparkscan
-- `src/hooks/useSparkWallet.ts` - Xverse wallet integration
+- `src/hooks/useSparkWallet.ts` - Xverse wallet integration ✅ FIXED
 
-### Netlify Functions
-- `netlify/functions/flashnet-proxy.ts` - CORS proxy for Flashnet API
+### Wallet Connection (FIXED)
+**Critical Fix Applied:**
+- Changed from `spark_getAddresses` → `wallet_connect` for initial connection
+- This shows the Xverse popup correctly (previous method required prior permission)
+- Added proper `RpcErrorCode` imports for error handling
+- Fixed balance fetching: `undefined` parameter instead of `{}`
+- Fixed message signing: removed incorrect `address` parameter
+- Removed all `as any` type casts for proper TypeScript safety
+
+**Authentication Flow:**
+1. User connects wallet via `wallet_connect` → Xverse popup appears
+2. User approves → get address and publicKey
+3. Auto-authenticate with Flashnet via challenge-response
+4. Sign challenge with wallet → get JWT token
+5. Include token in all API requests
+6. Auto-refresh token before 1-hour expiry
+
+### Proxy Infrastructure
+- `netlify/functions/flashnet-proxy.ts` - CORS proxy for Flashnet API (development)
+- `cloudflare-worker/` - Cloudflare Worker proxy (production: flashnet-proxy.degensmoke.workers.dev)
 
 ### Visual Components
 - Terminal aesthetic with emerald green (#34d399) accents
