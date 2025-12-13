@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSparkWallet } from "@/hooks/useSparkWallet";
 import { usePools, useSwapQuote, useExecuteSwap, type Pool } from "@/hooks/useFlashnet";
-import { parseTokenAmount } from "@/lib/flashnet";
-import { flashnetAuth } from "@/lib/auth";
+import { flashnetSDK, parseTokenAmount } from "@/lib/flashnet-sdk";
 import {
   SwapHeader,
   SwapConnectGate,
@@ -33,8 +32,8 @@ export default function SparkSwap() {
     installUrl,
   } = useSparkWallet();
 
-  // Pool state with React Query
-  const { data: pools = [], isLoading: loadingPools, error: poolsQueryError, refetch: refetchPools } = usePools();
+  // Pool state with React Query - only fetch when wallet is connected
+  const { data: pools = [], isLoading: loadingPools, error: poolsQueryError, refetch: refetchPools } = usePools(undefined, isConnected);
   const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
   const poolsError = poolsQueryError ? (poolsQueryError as Error).message : null;
 
@@ -89,20 +88,20 @@ export default function SparkSwap() {
     }
   }, [isConnected]);
 
-  // Auto-authenticate with Flashnet API when wallet connects
+  // Auto-authenticate with Flashnet SDK when wallet connects
   useEffect(() => {
     if (isConnected && publicKey && signMessage) {
-      console.log("[SparkSwap] Wallet connected, authenticating with Flashnet...");
-      flashnetAuth.authenticate(publicKey, signMessage)
+      console.log("[SparkSwap] Wallet connected, authenticating with Flashnet SDK...");
+      flashnetSDK.authenticate(publicKey, signMessage)
         .then(() => {
-          console.log("[SparkSwap] Flashnet authentication successful");
+          console.log("[SparkSwap] Flashnet SDK authentication successful");
         })
         .catch((err) => {
-          console.error("[SparkSwap] Flashnet authentication failed:", err);
+          console.error("[SparkSwap] Flashnet SDK authentication failed:", err);
         });
     } else if (!isConnected) {
       // Clear auth when wallet disconnects
-      flashnetAuth.clearAuth();
+      flashnetSDK.clearAuth();
     }
   }, [isConnected, publicKey, signMessage]);
 

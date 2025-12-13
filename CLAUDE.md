@@ -52,6 +52,7 @@ npm run preview   # Preview production build
 - **React Router v6** for routing
 - **lightweight-charts** for TradingView-style charts
 - **Sats Connect** for Xverse wallet integration
+- **@flashnet/sdk** (v0.4.0) - Official Flashnet SDK for AMM operations
 - **Netlify Functions** for serverless API proxy
 
 ## Architecture
@@ -73,10 +74,22 @@ npm run preview   # Preview production build
 - `src/components/spark-swap/` - Modular swap sub-components
 
 ### API Integration
-- `src/lib/flashnet.ts` - Flashnet AMM API client (pools, swaps, OHLCV)
-- `src/lib/auth.ts` - Flashnet authentication (challenge-response, JWT management)
+
+**Flashnet SDK Integration (Official SDK):**
+- `src/lib/flashnet-sdk.ts` - ✅ **Official Flashnet SDK wrapper** using modular components
+  - Uses `@flashnet/sdk` v0.4.0 (official package from npm)
+  - Modular approach: `ApiClient` + `AuthManager` + `TypedAmmApi`
+  - Custom signer for Xverse wallet (converts hex ↔ Uint8Array)
+  - Bypasses Cloudflare blocking via SDK's built-in API client
+  - **Status**: ✅ Pool fetching working (100 pools, 3,742 total)
+  - **Known issue**: Authentication signer needs debugging for swap execution
+  - **Docs**: https://www.npmjs.com/package/@flashnet/sdk
+
+**Legacy/Fallback Files:**
+- `src/lib/flashnet.ts` - Legacy Flashnet API client (kept for reference)
+- `src/lib/auth.ts` - Legacy authentication (kept for reference)
 - `src/lib/sparkscan.ts` - Sparkscan API client (holders, transactions)
-- `src/hooks/useFlashnet.ts` - React Query hooks for Flashnet
+- `src/hooks/useFlashnet.ts` - React Query hooks using SDK
 - `src/hooks/useSparkscan.ts` - React Query hooks for Sparkscan
 - `src/hooks/useSparkWallet.ts` - Xverse wallet integration ✅ FIXED
 
@@ -89,13 +102,16 @@ npm run preview   # Preview production build
 - Fixed message signing: removed incorrect `address` parameter
 - Removed all `as any` type casts for proper TypeScript safety
 
-**Authentication Flow:**
+**Authentication Flow (using @flashnet/sdk):**
 1. User connects wallet via `wallet_connect` → Xverse popup appears
 2. User approves → get address and publicKey
-3. Auto-authenticate with Flashnet via challenge-response
-4. Sign challenge with wallet → get JWT token
-5. Include token in all API requests
-6. Auto-refresh token before 1-hour expiry
+3. SDK's `AuthManager` handles authentication:
+   - Requests challenge from `/v1/auth/challenge`
+   - Custom signer converts Uint8Array ↔ hex for Xverse wallet
+   - Signs challenge and sends to `/v1/auth/verify`
+   - SDK manages JWT token internally
+4. All SDK API calls automatically include auth token
+5. **Current status**: Pool fetching works (public data), authentication for swaps needs debugging
 
 ### Proxy Infrastructure
 - `netlify/functions/flashnet-proxy.ts` - CORS proxy for Flashnet API (development)

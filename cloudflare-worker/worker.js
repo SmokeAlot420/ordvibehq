@@ -65,12 +65,26 @@ export default {
     console.log(`[Flashnet Proxy] ${request.method} ${targetUrl}`);
 
     try {
-      // Forward request to Flashnet API
-      // Forward Authorization header for authenticated requests
+      // Forward request to Flashnet API with browser headers to bypass Cloudflare bot detection
       const proxyRequest = new Request(targetUrl, {
         method: request.method,
         headers: {
+          // Browser identification (bypasses Cloudflare bot detection)
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'application/json, text/plain, */*',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
           'Content-Type': 'application/json',
+
+          // Make request appear to originate from flashnet.xyz
+          'Origin': 'https://flashnet.xyz',
+          'Referer': 'https://flashnet.xyz/',
+
+          // CORS security headers (browser context)
+          'Sec-Fetch-Dest': 'empty',
+          'Sec-Fetch-Mode': 'cors',
+          'Sec-Fetch-Site': 'same-origin',
+
           // Forward Authorization header if present (for JWT token)
           ...(request.headers.get('Authorization') && {
             'Authorization': request.headers.get('Authorization')

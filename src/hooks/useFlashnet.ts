@@ -4,23 +4,18 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  fetchPools,
-  getPool,
-  simulateSwap,
-  executeSwap,
-  getSwapHistory,
-  getPoolOHLCV,
-  getTopMovers,
-  type Pool,
-  type SwapParams,
-  type SwapQuote,
-  type SwapResult,
-  type ListPoolsQuery,
-  type SwapHistoryItem,
-  type OHLCVData,
-  type TopMover,
-} from "@/lib/flashnet";
+import { flashnetSDK, type SwapParams, type SwapQuote, type SwapResult } from "@/lib/flashnet-sdk";
+import { getSwapHistory, getPoolOHLCV, getTopMovers, type SwapHistoryItem, type OHLCVData, type TopMover } from "@/lib/flashnet";
+
+// Re-export Pool type from SDK
+export type { Pool } from "@flashnet/sdk";
+export type ListPoolsQuery = {
+  limit?: number;
+  offset?: number;
+  sort?: string;
+  minTvl?: number;
+  minVolume24h?: number;
+};
 
 // Query keys for cache management
 export const flashnetKeys = {
@@ -40,11 +35,13 @@ export const flashnetKeys = {
 
 /**
  * Fetch all pools with optional filtering
+ * Only fetches when enabled (should be true only when authenticated)
  */
-export function usePools(query?: ListPoolsQuery) {
+export function usePools(query?: ListPoolsQuery, enabled: boolean = true) {
   return useQuery({
     queryKey: flashnetKeys.poolsList(query),
-    queryFn: () => fetchPools(query),
+    queryFn: () => flashnetSDK.fetchPools(query),
+    enabled, // Only fetch when explicitly enabled
     staleTime: 30 * 1000, // Consider data fresh for 30 seconds
     refetchInterval: 60 * 1000, // Auto-refresh every minute
   });
@@ -56,7 +53,7 @@ export function usePools(query?: ListPoolsQuery) {
 export function usePool(poolId: string | null) {
   return useQuery({
     queryKey: flashnetKeys.pool(poolId || ""),
-    queryFn: () => (poolId ? getPool(poolId) : null),
+    queryFn: () => (poolId ? flashnetSDK.getPool(poolId) : null),
     enabled: !!poolId,
     staleTime: 30 * 1000,
     refetchInterval: 30 * 1000, // More frequent updates for active pool
@@ -78,7 +75,7 @@ export function useSwapQuote(params: SwapParams | null) {
       if (!params || !params.amountIn || params.amountIn === 0n) {
         return null;
       }
-      return simulateSwap(params);
+      return flashnetSDK.simulateSwap(params);
     },
     enabled: !!params && !!params.poolId && !!params.amountIn && params.amountIn > 0n,
     staleTime: 10 * 1000, // Quotes get stale fast
@@ -93,7 +90,7 @@ export function useExecuteSwap() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: SwapParams) => executeSwap(params),
+    mutationFn: (params: SwapParams) => flashnetSDK.executeSwap(params),
     onSuccess: (result, params) => {
       if (result.success) {
         // Invalidate pools to refresh reserves

@@ -33,8 +33,8 @@ const getProxyEndpoint = (): string => {
   return '/.netlify/functions/flashnet-proxy';
 };
 
-const PROXY_ENDPOINT = getProxyEndpoint();
-const USE_PROXY = true; // Enable proxy with authentication
+export const PROXY_ENDPOINT = getProxyEndpoint();
+export const USE_PROXY = true; // Enable proxy with authentication
 
 // Environment flag for development mode
 const USE_MOCK_DATA = import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_DATA === "true";
@@ -388,8 +388,8 @@ export async function fetchPools(query?: ListPoolsQuery): Promise<Pool[]> {
     const response = await fetchApi<ApiPoolsListResponse>(endpoint);
     return response.pools.map(transformApiPool);
   } catch (error) {
-    console.warn("[Flashnet] API failed, falling back to mock data:", error);
-    return MOCK_POOLS;
+    console.error("[Flashnet] Failed to fetch pools:", error);
+    throw error; // Don't fall back to mock data - let the UI handle the error
   }
 }
 
@@ -406,8 +406,8 @@ export async function getPool(poolId: string): Promise<Pool | null> {
     const response = await fetchApi<ApiPoolResponse>(`/v1/pools/${poolId}`);
     return transformApiPool(response);
   } catch (error) {
-    console.warn("[Flashnet] getPool failed, checking mock data:", error);
-    return MOCK_POOLS.find((p) => p.poolId === poolId) || null;
+    console.error("[Flashnet] Failed to fetch pool:", error);
+    throw error; // Don't fall back to mock data
   }
 }
 

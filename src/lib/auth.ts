@@ -9,6 +9,8 @@
  * 5. Auto-refresh before expiry
  */
 
+import { PROXY_ENDPOINT, USE_PROXY } from "./flashnet";
+
 const FLASHNET_API_BASE = "https://api.amm.flashnet.xyz";
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000; // Refresh 5 min before expiry
 
@@ -27,6 +29,16 @@ export class FlashnetAuth {
   private publicKey: string | null = null;
   private signFn: ((message: string) => Promise<string>) | null = null;
   private authPromise: Promise<void> | null = null;
+
+  /**
+   * Helper to build API URL (use proxy if enabled)
+   */
+  private getApiUrl(endpoint: string): string {
+    if (USE_PROXY) {
+      return `${PROXY_ENDPOINT}?path=${encodeURIComponent(endpoint)}`;
+    }
+    return `${FLASHNET_API_BASE}${endpoint}`;
+  }
 
   /**
    * Authenticate with Flashnet API using wallet signature
@@ -55,8 +67,8 @@ export class FlashnetAuth {
     try {
       console.log("[FlashnetAuth] Starting authentication for:", publicKey);
 
-      // Step 1: Request challenge
-      const challengeRes = await fetch(`${FLASHNET_API_BASE}/v1/auth/challenge`, {
+      // Step 1: Request challenge (through proxy with browser headers)
+      const challengeRes = await fetch(this.getApiUrl("/v1/auth/challenge"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ publicKey }),
@@ -73,8 +85,8 @@ export class FlashnetAuth {
       const signature = await signFn(challengeData.challengeString);
       console.log("[FlashnetAuth] Challenge signed");
 
-      // Step 3: Verify signature and get JWT token
-      const verifyRes = await fetch(`${FLASHNET_API_BASE}/v1/auth/verify`, {
+      // Step 3: Verify signature and get JWT token (through proxy with browser headers)
+      const verifyRes = await fetch(this.getApiUrl("/v1/auth/verify"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ publicKey, signature }),
