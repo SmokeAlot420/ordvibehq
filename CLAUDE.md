@@ -81,8 +81,10 @@ npm run preview   # Preview production build
   - Modular approach: `ApiClient` + `AuthManager` + `TypedAmmApi`
   - Custom signer for Xverse wallet (converts hex ↔ Uint8Array)
   - Bypasses Cloudflare blocking via SDK's built-in API client
-  - **Token Metadata**: ✅ Cached from Sparksat token list (14 tokens: SNOW, USDB, FSPKS, etc.)
-    - Source: https://sparksat.app/sparksat.json
+  - **Token Metadata**: ✅ Cached from Sparksat + Luminex (22 tokens total)
+    - **Sparksat**: 14 tokens (SNOW, USDB, FSPKS, AURORA, UTXO, AKITA, TOTO, BIT, TSPK, BIRD, SCPUM, HOP, XSPK)
+    - **Luminex**: 8 tokens (SOON, SATS, BITTY, DRAGON, H0DL, BUTT, BETA, XBT)
+    - Sources: https://sparksat.app/sparksat.json + https://luminex.io/spark/discover/tokens
     - Falls back to address prefix for unknown tokens
     - Includes name, ticker, decimals, logoUrl for each token
   - **Status**: ✅ Pool fetching working (100 pools, 3,742 total)
