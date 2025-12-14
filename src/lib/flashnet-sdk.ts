@@ -85,6 +85,32 @@ const TOKEN_METADATA: Record<string, Partial<Token>> = {
   "btkn1xgrvjwey5ngcagvap2dzzvsy4uk8ua9x69k82dwvt5e7ef9drm9qztux87": {
     name: "USD Bitcoin", ticker: "USDB", decimals: 6, logoUrl: "https://flashnet.xyz/images/usdb-full.svg"
   },
+
+  // Luminex tokens (discovered via https://luminex.io/spark/discover/tokens)
+  "btkn16w9v5shwtv78xwsc0dt00sx9g8r8fdtpnhtxfzpfzz8sl9mzt4ts7zh0dl": {
+    name: "Sooncoin", ticker: "SOON", decimals: 8
+  },
+  "btkn1q6lea9lkrlz62fgpymm69ffxgghkte5ukk59jmlrsjseg0jsf5xse8h0dl": {
+    name: "SATOSHI", ticker: "SATS", decimals: 8
+  },
+  "btkn1zkkmewrwk2j6798tsz3ur26sc8y44h2w43qdyy0pkn99rh3ggmxqf0h0dl": {
+    name: "Bitcoin Mascot", ticker: "BITTY", decimals: 8
+  },
+  "btkn14fhz4hgmfsdt3sqgs0dkc46z9vdxgduaykuvtcskkjl8zgj96s9qw3h0dl": {
+    name: "DRAGON", ticker: "DRAGON", decimals: 8
+  },
+  "btkn1jhhl7twas5vvff92hglcr7fu394ea9pd5pks74x79x48qw69f4ksgwh0dl": {
+    name: "h0dl", ticker: "H0DL", decimals: 8
+  },
+  "btkn1n5pm3auz6mdh88le0lu7ytk3h0ed28zu0nesk9pjhlc036a5xsyqeuh0dl": {
+    name: "Buttcoin", ticker: "BUTT", decimals: 8
+  },
+  "btkn1muyrh56matnjmylnafd76v8gsfke60qmg76n02k96h4cly0vr75s7yh0dl": {
+    name: "BETACAT", ticker: "BETA", decimals: 8
+  },
+  "btkn1vudakftcq3vyqr76t69fquzwgu5rzdt99jrgcr6vfkst75vf34csajh0dl": {
+    name: "XBT", ticker: "XBT", decimals: 8
+  },
 };
 
 /**
