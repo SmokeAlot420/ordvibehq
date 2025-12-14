@@ -16,6 +16,7 @@ import {
   type SimulateSwapRequest,
   type SimulateSwapResponse,
 } from "@flashnet/sdk";
+import { tokenRegistry } from "./token-registry";
 
 // Re-export SDK types
 export type { AmmPool, ListPoolsResponse } from "@flashnet/sdk";
@@ -115,9 +116,16 @@ const TOKEN_METADATA: Record<string, Partial<Token>> = {
 
 /**
  * Get token metadata by address
- * Falls back to generating ticker from address if unknown
+ * First checks dynamic registry, then static fallback, then generates from address
  */
 function getTokenMetadata(address: string): Token {
+  // Try dynamic token registry first (fetches from APIs)
+  const dynamicToken = tokenRegistry.getToken(address);
+  if (dynamicToken) {
+    return dynamicToken;
+  }
+
+  // Fall back to static metadata (manually added tokens)
   const cached = TOKEN_METADATA[address];
   if (cached) {
     return {
@@ -128,6 +136,7 @@ function getTokenMetadata(address: string): Token {
       logoUrl: cached.logoUrl,
     };
   }
+
   // Unknown token - use address prefix as ticker
   return {
     publicKey: address,
