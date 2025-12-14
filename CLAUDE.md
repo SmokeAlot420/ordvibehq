@@ -81,12 +81,17 @@ npm run preview   # Preview production build
   - Modular approach: `ApiClient` + `AuthManager` + `TypedAmmApi`
   - Custom signer for Xverse wallet (converts hex ↔ Uint8Array)
   - Bypasses Cloudflare blocking via SDK's built-in API client
-  - **Token Metadata**: ✅ Cached from Sparksat + Luminex (22 tokens total)
-    - **Sparksat**: 14 tokens (SNOW, USDB, FSPKS, AURORA, UTXO, AKITA, TOTO, BIT, TSPK, BIRD, SCPUM, HOP, XSPK)
-    - **Luminex**: 8 tokens (SOON, SATS, BITTY, DRAGON, H0DL, BUTT, BETA, XBT)
-    - Sources: https://sparksat.app/sparksat.json + https://luminex.io/spark/discover/tokens
-    - Falls back to address prefix for unknown tokens
-    - Includes name, ticker, decimals, logoUrl for each token
+  - **Token Metadata**: ✅ Dynamic auto-updating registry
+    - **Auto-fetches** from 4 sources: Sparksat, BitBit, SparkMoneyBot, Flashnet
+    - **Auto-refreshes** every 5 minutes to catch new tokens
+    - **Static fallback** for manually added tokens (SOON, DRAGON, etc. from Luminex)
+    - **No manual updates needed** - new tokens appear automatically!
+    - Sources:
+      - https://sparksat.app/sparksat.json
+      - https://bitbit.bot/bitbit.json
+      - https://sparkmoneybot.com/sparkmoneybot.json
+      - https://flashnet.xyz/api/tokenlist
+    - Implementation: `src/lib/token-registry.ts`
   - **Status**: ✅ Pool fetching working (100 pools, 3,742 total)
   - **Status**: ✅ Token names displaying correctly (SNOW/BTC instead of address prefixes)
   - **Known issue**: Authentication signer needs debugging for swap execution
