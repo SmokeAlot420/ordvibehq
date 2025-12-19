@@ -5,9 +5,121 @@ import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
 import AmbientMusic from "@/components/AmbientMusic";
 import SparkSwap from "@/components/SparkSwap";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
 
 const Index = () => {
   const [showSwap, setShowSwap] = useState(false);
+  const [twitter, setTwitter] = useState("");
+  const [wallet, setWallet] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
+  // Validation functions
+  const cleanTwitterHandle = (handle: string) => {
+    return handle.replace(/^@/, "").trim();
+  };
+
+  const isValidTwitter = (handle: string) => {
+    const regex = /^[a-zA-Z0-9_]{1,15}$/;
+    return regex.test(handle);
+  };
+
+  const isValidSparkAddress = (address: string) => {
+    // Accept bc1p (Bitcoin Taproot) or tb1p (Testnet) addresses
+    const regex = /^(bc1p|tb1p)[a-z0-9]{58,62}$/i;
+    return regex.test(address);
+  };
+
+  // Form submission handler
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validation
+    if (!wallet.trim()) {
+      toast({
+        title: "catalyst missing",
+        description: "spark address required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!twitter.trim()) {
+      toast({
+        title: "identity missing",
+        description: "X handle required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!isValidSparkAddress(wallet)) {
+      toast({
+        title: "unstable catalyst",
+        description: "invalid spark address format",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const cleanTwitter = cleanTwitterHandle(twitter);
+    if (!isValidTwitter(cleanTwitter)) {
+      toast({
+        title: "invalid identifier",
+        description: "X handle must be 1-15 characters (letters, numbers, underscore only)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Submit to Supabase
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from("taproot_wallets")
+        .insert({
+          wallet_address: wallet.trim(),
+          twitter_handle: cleanTwitter,
+          user_agent: navigator.userAgent,
+        });
+
+      if (error) {
+        // Handle specific errors
+        if (error.message.includes("wallet_address")) {
+          toast({
+            title: "reaction in progress",
+            description: "this spark address is already registered",
+            variant: "destructive",
+          });
+        } else if (error.message.includes("twitter_handle")) {
+          toast({
+            title: "identity collision",
+            description: "this X handle is already registered",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        // Success
+        toast({
+          title: "reaction initiated",
+          description: "catalyst added. follow @OrdVibeHQ & @bitplx for updates",
+        });
+        setWallet("");
+        setTwitter("");
+      }
+    } catch (error) {
+      toast({
+        title: "reaction unstable",
+        description: "submission failed. try again",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
@@ -47,24 +159,61 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Whitelist Status - Terminal Style */}
+          {/* Whitelist Form - Terminal Style */}
           <div className="mt-4 sm:mt-6 md:mt-8 animate-fade-in animate-delay-2">
-            <div className="alkanes-form-container genesis-sealed relative data-stream">
+            <form onSubmit={handleSubmit} className="alkanes-form-container relative data-stream">
               {/* Glow effect */}
               <div className="alkanes-form-glow" />
 
-              {/* Status content */}
-              <div className="alkanes-form-content py-6 space-y-2 text-left px-6">
+              {/* Form content */}
+              <div className="alkanes-form-content py-6 space-y-4 px-6">
+                {/* Header */}
                 <p className="text-emerald-400 font-mono text-xs sm:text-sm terminal-prompt">
-                  <span className="opacity-60">&gt;</span> whitelist: <span className="sealed-badge">loading</span><span className="blink-cursor"></span>
+                  <span className="opacity-60">&gt;</span> whitelist: <span className="sealed-badge">open</span><span className="blink-cursor"></span>
                 </p>
-                <p className="text-emerald-400/80 font-mono text-xs sm:text-sm">
-                  <span className="opacity-60">&gt;</span> early birds: locked in
-                </p>
-                <p className="text-emerald-400/60 font-mono text-xs sm:text-sm">
-                  <span className="opacity-60">&gt;</span> next phase: BitPlex genesis
-                </p>
-                <div className="pt-4 flex justify-center gap-4 text-xs">
+
+                {/* Twitter Handle Input */}
+                <div className="space-y-2">
+                  <label className="text-emerald-400/80 font-mono text-xs">
+                    <span className="opacity-60">&gt;</span> X handle:
+                  </label>
+                  <input
+                    type="text"
+                    value={twitter}
+                    onChange={(e) => setTwitter(e.target.value)}
+                    placeholder="@smokedev"
+                    disabled={loading}
+                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-4 py-2 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50"
+                  />
+                </div>
+
+                {/* Spark Address Input */}
+                <div className="space-y-2">
+                  <label className="text-emerald-400/80 font-mono text-xs">
+                    <span className="opacity-60">&gt;</span> spark address:
+                  </label>
+                  <input
+                    type="text"
+                    value={wallet}
+                    onChange={(e) => setWallet(e.target.value)}
+                    placeholder="bc1p..."
+                    disabled={loading}
+                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-4 py-2 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-black font-mono font-bold py-3 px-6 rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? "processing..." : "initialize reaction"}
+                </button>
+
+                {/* Social Links */}
+                <div className="pt-2 flex justify-center gap-4 text-xs border-t border-emerald-500/20">
+                  <p className="text-emerald-400/60 font-mono">follow for updates:</p>
                   <a
                     href="https://twitter.com/OrdVibeHQ"
                     className="text-cyan-400 hover:text-cyan-300 transition-colors hover:glow-text"
@@ -84,7 +233,7 @@ const Index = () => {
                   </a>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
 
           {/* ENTER TERMINAL Button */}
