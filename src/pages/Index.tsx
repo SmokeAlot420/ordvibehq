@@ -103,7 +103,7 @@ const Index = () => {
         // Success
         toast({
           title: "reaction initiated",
-          description: "catalyst added. follow @OrdVibeHQ & @bitplx for updates",
+          description: "catalyst added. follow @OrdVibeHQ for updates",
         });
         setWallet("");
         setTwitter("");
@@ -179,7 +179,7 @@ const Index = () => {
                     type="text"
                     value={twitter}
                     onChange={(e) => setTwitter(e.target.value)}
-                    placeholder="@smokedev"
+                    placeholder="@handle"
                     disabled={loading}
                     className="w-full bg-black/40 border border-emerald-500/30 rounded px-4 py-2 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50"
                   />
@@ -219,15 +219,6 @@ const Index = () => {
                     rel="noopener noreferrer"
                   >
                     @OrdVibeHQ
-                  </a>
-                  <span className="text-gray-600">|</span>
-                  <a
-                    href="https://twitter.com/bitplx"
-                    className="text-cyan-400 hover:text-cyan-300 transition-colors hover:glow-text"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    @bitplx
                   </a>
                 </div>
               </div>
