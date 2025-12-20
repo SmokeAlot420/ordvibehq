@@ -10,6 +10,7 @@ const Index = () => {
   const [twitter, setTwitter] = useState("");
   const [wallet, setWallet] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmedFollow, setConfirmedFollow] = useState(false);
 
   // Terminal modal state
   const [modal, setModal] = useState<{
@@ -48,7 +49,12 @@ const Index = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation
+    // Validation - follow requirement first
+    if (!confirmedFollow) {
+      showModal("access denied", "you must follow @OrdVibeHQ first", "error");
+      return;
+    }
+
     if (!wallet.trim()) {
       showModal("signal incomplete", "wallet address required", "error");
       return;
@@ -184,10 +190,37 @@ const Index = () => {
                   />
                 </div>
 
+                {/* Follow Requirement */}
+                <div className="space-y-3 border-t border-emerald-500/20 pt-3">
+                  {/* Follow Button */}
+                  <a
+                    href="https://twitter.com/intent/follow?screen_name=OrdVibeHQ"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 bg-black/40 border border-cyan-500/30 hover:border-cyan-500 text-cyan-400 font-mono py-3 px-4 rounded transition-all min-h-[48px] text-sm"
+                  >
+                    <span>→</span> follow @OrdVibeHQ
+                  </a>
+
+                  {/* Confirmation Checkbox */}
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={confirmedFollow}
+                      onChange={(e) => setConfirmedFollow(e.target.checked)}
+                      disabled={loading}
+                      className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                    />
+                    <span className="text-emerald-400/80 font-mono text-xs group-hover:text-emerald-400 transition-colors">
+                      I follow @OrdVibeHQ
+                    </span>
+                  </label>
+                </div>
+
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !confirmedFollow}
                   className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-black font-mono font-bold py-3 sm:py-4 px-6 rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] text-sm sm:text-base"
                 >
                   {loading ? "processing..." : "initialize reaction"}
