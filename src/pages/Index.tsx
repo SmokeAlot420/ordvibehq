@@ -131,13 +131,13 @@ const Index = () => {
             <BioTerminal />
           </div>
 
-          {/* BitPlex Genesis Text - with glitch effect */}
+          {/* Genesis Text - with glitch effect */}
           <div className="mb-4 sm:mb-6">
             <p
               className="text-[10px] sm:text-xs md:text-sm alkanes-text glitch-text"
-              data-text="BitPlex://genesis: activation sequence initiated"
+              data-text="genesis: activation sequence initiated"
             >
-              BitPlex://genesis: activation sequence initiated
+              genesis: activation sequence initiated
             </p>
           </div>
 
