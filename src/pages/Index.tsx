@@ -136,7 +136,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="text-center space-y-4 sm:space-y-6 w-full max-w-lg mx-auto premium-glass p-6 sm:p-8 md:p-10 rounded-2xl">
+        <div className="text-center space-y-3 sm:space-y-4 md:space-y-6 w-full max-w-lg mx-auto premium-glass p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl sm:rounded-2xl">
           {/* Main mysterious line */}
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6 leading-tight tracking-tighter animate-fade-in flex justify-center items-center">
             <AnimatedTestTube />
@@ -164,7 +164,7 @@ const Index = () => {
               <div className="alkanes-form-glow" />
 
               {/* Form content */}
-              <div className="alkanes-form-content py-6 space-y-4 px-6">
+              <div className="alkanes-form-content py-4 sm:py-6 space-y-3 sm:space-y-4 px-4 sm:px-6">
                 {/* Header */}
                 <p className="text-emerald-400 font-mono text-xs sm:text-sm terminal-prompt">
                   <span className="opacity-60">&gt;</span> whitelist: <span className="sealed-badge">open</span><span className="blink-cursor"></span>
@@ -181,7 +181,7 @@ const Index = () => {
                     onChange={(e) => setTwitter(e.target.value)}
                     placeholder="@handle"
                     disabled={loading}
-                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-4 py-2 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50"
+                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-3 sm:px-4 py-3 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50 min-h-[48px]"
                   />
                 </div>
 
@@ -196,7 +196,7 @@ const Index = () => {
                     onChange={(e) => setWallet(e.target.value)}
                     placeholder="spark1p..."
                     disabled={loading}
-                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-4 py-2 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50"
+                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-3 sm:px-4 py-3 text-emerald-400 font-mono text-[11px] sm:text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50 min-h-[48px] truncate"
                   />
                 </div>
 
@@ -204,13 +204,13 @@ const Index = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-black font-mono font-bold py-3 px-6 rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-black font-mono font-bold py-3 sm:py-4 px-6 rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] text-sm sm:text-base"
                 >
                   {loading ? "processing..." : "initialize reaction"}
                 </button>
 
                 {/* Social Links */}
-                <div className="pt-2 flex justify-center gap-4 text-xs border-t border-emerald-500/20">
+                <div className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-xs border-t border-emerald-500/20">
                   <p className="text-emerald-400/60 font-mono">follow for updates:</p>
                   <a
                     href="https://twitter.com/OrdVibeHQ"
@@ -230,19 +230,28 @@ const Index = () => {
             .enter-terminal-btn {
               display: inline-flex;
               align-items: center;
-              gap: 8px;
-              padding: 16px 32px;
+              gap: 6px;
+              padding: 12px 20px;
               background: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
               border: 2px solid rgba(52, 211, 153, 0.5);
               color: #34d399;
               font-family: 'JetBrains Mono', 'Fira Code', monospace;
-              font-size: 14px;
+              font-size: 12px;
               font-weight: 700;
-              letter-spacing: 2px;
+              letter-spacing: 1px;
               text-decoration: none;
               transition: all 0.3s ease;
               position: relative;
               overflow: hidden;
+            }
+
+            @media (min-width: 640px) {
+              .enter-terminal-btn {
+                gap: 8px;
+                padding: 16px 32px;
+                font-size: 14px;
+                letter-spacing: 2px;
+              }
             }
 
             .enter-terminal-btn::before {
@@ -280,7 +289,7 @@ const Index = () => {
         </div>
 
         {/* ENTER TERMINAL Button - Outside premium-glass for spacing */}
-        <div className="mt-8 animate-fade-in animate-delay-3">
+        <div className="mt-6 sm:mt-8 animate-fade-in animate-delay-3">
           <button
             onClick={() => {
               toast({
