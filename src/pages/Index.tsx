@@ -23,8 +23,9 @@ const Index = () => {
   };
 
   const isValidSparkAddress = (address: string) => {
-    // Accept bc1p (Bitcoin Taproot) or tb1p (Testnet) addresses
-    const regex = /^(bc1p|tb1p)[a-z0-9]{58,62}$/i;
+    // Accept spark1p addresses (Spark L2 format)
+    // Example: spark1pgss928k9n5dahcxv3e4hgk0l3qad9kva335ttunqf7x4ud9zqy54ug0krlsyx
+    const regex = /^spark1p[a-z0-9]{55,70}$/i;
     return regex.test(address);
   };
 
@@ -193,7 +194,7 @@ const Index = () => {
                     type="text"
                     value={wallet}
                     onChange={(e) => setWallet(e.target.value)}
-                    placeholder="bc1p..."
+                    placeholder="spark1p..."
                     disabled={loading}
                     className="w-full bg-black/40 border border-emerald-500/30 rounded px-4 py-2 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50"
                   />
