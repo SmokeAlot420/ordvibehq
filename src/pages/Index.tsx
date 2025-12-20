@@ -1,15 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import AnimatedTestTube from "@/components/AnimatedTestTube";
 import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
 import AmbientMusic from "@/components/AmbientMusic";
-import SparkSwap from "@/components/SparkSwap";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 
 const Index = () => {
-  const [showSwap, setShowSwap] = useState(false);
   const [twitter, setTwitter] = useState("");
   const [wallet, setWallet] = useState("");
   const [loading, setLoading] = useState(false);
@@ -236,38 +233,6 @@ const Index = () => {
             </form>
           </div>
 
-          {/* ENTER TERMINAL Button */}
-          <div className="mt-8 animate-fade-in animate-delay-3">
-            <Link
-              to="/dashboard"
-              className="enter-terminal-btn group"
-            >
-              <span className="btn-bracket">[</span>
-              <span className="btn-text">ENTER_TERMINAL</span>
-              <span className="btn-bracket">]</span>
-              <span className="btn-arrow group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
-          </div>
-
-          {/* Spark Swap Toggle */}
-          <div className="mt-4 animate-fade-in animate-delay-3">
-            <button
-              onClick={() => setShowSwap(!showSwap)}
-              className="text-emerald-400/40 hover:text-emerald-400/80 font-mono text-xs transition-all duration-300 flex items-center gap-2 mx-auto"
-            >
-              <span className="opacity-60">&gt;</span>
-              {showSwap ? "hide swap interface" : "quick swap"}
-              <span className="text-xs">{showSwap ? "[-]" : "[+]"}</span>
-            </button>
-          </div>
-
-          {/* Spark Swap Interface */}
-          {showSwap && (
-            <div className="mt-4 animate-fade-in w-full max-w-md mx-auto">
-              <SparkSwap />
-            </div>
-          )}
-
           {/* Terminal Button Styles */}
           <style>{`
             .enter-terminal-btn {
@@ -320,6 +285,24 @@ const Index = () => {
               margin-left: 4px;
             }
           `}</style>
+        </div>
+
+        {/* ENTER TERMINAL Button - Outside premium-glass for spacing */}
+        <div className="mt-8 animate-fade-in animate-delay-3">
+          <button
+            onClick={() => {
+              toast({
+                title: "not yet Degen 🚬",
+                description: "dashboard coming soon... stay tuned",
+              });
+            }}
+            className="enter-terminal-btn group cursor-pointer"
+          >
+            <span className="btn-bracket">[</span>
+            <span className="btn-text">ENTER_TERMINAL</span>
+            <span className="btn-bracket">]</span>
+            <span className="btn-arrow group-hover:translate-x-1 transition-transform">→</span>
+          </button>
         </div>
       </div>
     </div>
