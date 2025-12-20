@@ -135,9 +135,9 @@ const Index = () => {
           <div className="mb-4 sm:mb-6">
             <p
               className="text-[10px] sm:text-xs md:text-sm alkanes-text glitch-text"
-              data-text="genesis: activation sequence initiated"
+              data-text="Genesis: activation sequence initiated"
             >
-              genesis: activation sequence initiated
+              Genesis: activation sequence initiated
             </p>
           </div>
 
