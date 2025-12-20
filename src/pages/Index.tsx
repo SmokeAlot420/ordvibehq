@@ -3,14 +3,29 @@ import AnimatedTestTube from "@/components/AnimatedTestTube";
 import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
 import AmbientMusic from "@/components/AmbientMusic";
-import { useToast } from "@/hooks/use-toast";
+import TerminalModal from "@/components/TerminalModal";
 import { supabase } from "@/lib/supabase";
 
 const Index = () => {
   const [twitter, setTwitter] = useState("");
   const [wallet, setWallet] = useState("");
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+
+  // Terminal modal state
+  const [modal, setModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: 'success' | 'error' | 'info';
+  }>({ isOpen: false, title: '', message: '', type: 'success' });
+
+  const showModal = (title: string, message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setModal({ isOpen: true, title, message, type });
+  };
+
+  const closeModal = () => {
+    setModal(prev => ({ ...prev, isOpen: false }));
+  };
 
   // Validation functions
   const cleanTwitterHandle = (handle: string) => {
@@ -35,39 +50,23 @@ const Index = () => {
 
     // Validation
     if (!wallet.trim()) {
-      toast({
-        title: "catalyst missing",
-        description: "spark address required",
-        variant: "destructive",
-      });
+      showModal("signal incomplete", "wallet address required", "error");
       return;
     }
 
     if (!twitter.trim()) {
-      toast({
-        title: "identity missing",
-        description: "X handle required",
-        variant: "destructive",
-      });
+      showModal("identity unknown", "X handle required", "error");
       return;
     }
 
     if (!isValidSparkAddress(wallet)) {
-      toast({
-        title: "unstable catalyst",
-        description: "invalid spark address format",
-        variant: "destructive",
-      });
+      showModal("unrecognized format", "invalid spark address", "error");
       return;
     }
 
     const cleanTwitter = cleanTwitterHandle(twitter);
     if (!isValidTwitter(cleanTwitter)) {
-      toast({
-        title: "invalid identifier",
-        description: "X handle must be 1-15 characters (letters, numbers, underscore only)",
-        variant: "destructive",
-      });
+      showModal("format error", "invalid X handle format", "error");
       return;
     }
 
@@ -85,35 +84,20 @@ const Index = () => {
       if (error) {
         // Handle specific errors
         if (error.message.includes("wallet_address")) {
-          toast({
-            title: "reaction in progress",
-            description: "this spark address is already registered",
-            variant: "destructive",
-          });
+          showModal("duplicate detected", "this wallet is already in the system", "error");
         } else if (error.message.includes("twitter_handle")) {
-          toast({
-            title: "identity collision",
-            description: "this X handle is already registered",
-            variant: "destructive",
-          });
+          showModal("identity claimed", "this handle is already registered", "error");
         } else {
           throw error;
         }
       } else {
-        // Success
-        toast({
-          title: "reaction initiated",
-          description: "catalyst added. follow @OrdVibeHQ for updates",
-        });
+        // Success - keep it mysterious, no guarantees
+        showModal("signal received", "you're on our radar. follow @OrdVibeHQ", "success");
         setWallet("");
         setTwitter("");
       }
     } catch (error) {
-      toast({
-        title: "reaction unstable",
-        description: "submission failed. try again",
-        variant: "destructive",
-      });
+      showModal("transmission failed", "connection interrupted. retry", "error");
     } finally {
       setLoading(false);
     }
@@ -292,10 +276,7 @@ const Index = () => {
         <div className="mt-6 sm:mt-8 animate-fade-in animate-delay-3">
           <button
             onClick={() => {
-              toast({
-                title: "not yet Degen 🚬",
-                description: "dashboard coming soon... stay tuned",
-              });
+              showModal("not yet", "dashboard coming soon...", "info");
             }}
             className="enter-terminal-btn group cursor-pointer"
           >
@@ -306,6 +287,15 @@ const Index = () => {
           </button>
         </div>
       </div>
+
+      {/* Terminal Modal */}
+      <TerminalModal
+        isOpen={modal.isOpen}
+        onClose={closeModal}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
     </div>
   );
 };
