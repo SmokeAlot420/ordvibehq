@@ -18,14 +18,20 @@ Follow the rules in `.claude/archon_rules.md` for the mandatory task-driven deve
 
 **BitPlex Dashboard** - Full-featured Spark L2 DEX dashboard with real-time trading data.
 
-**Current Status**: Dashboard fully functional with real Flashnet API integration and working wallet connection.
+**Current Status**: Phase 1 - Whitelist landing page (dashboard disabled until Phase 2).
 
-**Features:**
+**Phase 1 Features (Current):**
+- **Whitelist Form**: Collects X handle + Spark address (toggle-controlled)
+- **Terminal Modal**: Dramatic typing animation for form feedback
+- **ENTER TERMINAL Button**: Shows "dashboard coming soon" modal
+- **Supabase Integration**: Stores whitelist entries in `taproot_wallets` table
+
+**Phase 2 Features (Coming):**
 - **Dashboard Shell**: Sidebar navigation, cyberpunk terminal aesthetic
 - **Holder Analytics**: Top holders, distribution charts, Sparkscan API
 - **Trading Terminal**: TradingView charts (lightweight-charts), top movers, pools table
 - **SparkSwap**: Production-ready swap interface with Flashnet AMM
-- **Wallet Integration**: ✅ FIXED - Xverse wallet connects via `wallet_connect` method
+- **Wallet Integration**: Xverse wallet via `wallet_connect` method
 - **Authentication**: Challenge-response flow with JWT tokens for Flashnet API
 
 **Tech Context**:
@@ -55,23 +61,42 @@ npm run preview   # Preview production build
 - **@flashnet/sdk** (v0.4.0) - Official Flashnet SDK for AMM operations
 - **Netlify Functions** for serverless API proxy
 
+## Whitelist Toggle
+
+**Location:** `src/pages/Index.tsx` line 12
+
+```tsx
+const WHITELIST_OPEN = false; // Set to `true` to open whitelist
+```
+
+| Value | State |
+|-------|-------|
+| `false` | Shows "whitelist: loading..." message |
+| `true` | Shows full form (X handle, Spark address, follow checkbox) |
+
+**Form requirements when open:**
+- Must check "I follow @OrdVibeHQ" checkbox to submit
+- Validates Spark address format (`spark1p...`)
+- Validates X handle format
+- Stores to Supabase `taproot_wallets` table
+
 ## Architecture
 
 ### Route Structure
 ```
-/                    → Splash page with ENTER TERMINAL button
-/dashboard           → Dashboard overview (default)
-/dashboard/holders   → Holder analytics
-/dashboard/trading   → TradingView charts + top movers
-/dashboard/swap      → SparkSwap interface
+/                    → Whitelist landing page (Phase 1)
+/dashboard           → (Disabled until Phase 2)
+/dashboard/holders   → (Disabled until Phase 2)
+/dashboard/trading   → (Disabled until Phase 2)
+/dashboard/swap      → (Disabled until Phase 2)
 ```
 
 ### Key Files
-- `src/pages/Index.tsx` - Splash page with ENTER TERMINAL button
-- `src/pages/Dashboard.tsx` - Dashboard layout with nested routes
-- `src/components/dashboard/` - All dashboard view components
-- `src/components/SparkSwap.tsx` - Main swap orchestration (197 lines)
-- `src/components/spark-swap/` - Modular swap sub-components
+- `src/pages/Index.tsx` - Whitelist landing page with toggle
+- `src/components/TerminalModal.tsx` - Typing animation modal for feedback
+- `src/pages/Dashboard.tsx` - Dashboard layout (Phase 2)
+- `src/components/dashboard/` - Dashboard view components (Phase 2)
+- `src/components/SparkSwap.tsx` - Swap interface (Phase 2)
 
 ### API Integration
 
@@ -147,5 +172,6 @@ Build output: `dist/`
 
 - Dark/cyber/lab/terminal vibes
 - No corporate tone, keep it underground
-- Protocol references: `[BITPLEX://SPARK]`, `BitPlex://genesis`
-- Tagline: "BitPlex://genesis: activation sequence initiated"
+- Terminal aesthetic with emerald green (#34d399) and cyan (#22d3ee) accents
+- Tagline: "Genesis: activation sequence initiated"
+- Modal messages: mysterious, command-line style (no guarantees, no chemistry terms)
