@@ -6,6 +6,12 @@ import AmbientMusic from "@/components/AmbientMusic";
 import TerminalModal from "@/components/TerminalModal";
 import { supabase } from "@/lib/supabase";
 
+// ========================================
+// WHITELIST TOGGLE - Change to open/close form
+// ========================================
+const WHITELIST_OPEN = false; // Set to `true` to open whitelist
+// ========================================
+
 const Index = () => {
   const [twitter, setTwitter] = useState("");
   const [wallet, setWallet] = useState("");
@@ -147,99 +153,131 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Whitelist Form - Terminal Style */}
+          {/* Whitelist Section - Terminal Style */}
           <div className="mt-4 sm:mt-6 md:mt-8 animate-fade-in animate-delay-2">
-            <form onSubmit={handleSubmit} className="alkanes-form-container relative data-stream">
-              {/* Glow effect */}
-              <div className="alkanes-form-glow" />
+            {WHITELIST_OPEN ? (
+              /* === WHITELIST OPEN - Show Form === */
+              <form onSubmit={handleSubmit} className="alkanes-form-container relative data-stream">
+                {/* Glow effect */}
+                <div className="alkanes-form-glow" />
 
-              {/* Form content */}
-              <div className="alkanes-form-content py-4 sm:py-6 space-y-3 sm:space-y-4 px-4 sm:px-6">
-                {/* Header */}
-                <p className="text-emerald-400 font-mono text-xs sm:text-sm terminal-prompt">
-                  <span className="opacity-60">&gt;</span> whitelist: <span className="sealed-badge">open</span><span className="blink-cursor"></span>
-                </p>
+                {/* Form content */}
+                <div className="alkanes-form-content py-4 sm:py-6 space-y-3 sm:space-y-4 px-4 sm:px-6">
+                  {/* Header */}
+                  <p className="text-emerald-400 font-mono text-xs sm:text-sm terminal-prompt">
+                    <span className="opacity-60">&gt;</span> whitelist: <span className="sealed-badge">open</span><span className="blink-cursor"></span>
+                  </p>
 
-                {/* Twitter Handle Input */}
-                <div className="space-y-2">
-                  <label className="text-emerald-400/80 font-mono text-xs">
-                    <span className="opacity-60">&gt;</span> X handle:
-                  </label>
-                  <input
-                    type="text"
-                    value={twitter}
-                    onChange={(e) => setTwitter(e.target.value)}
-                    placeholder="@handle"
-                    disabled={loading}
-                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-3 sm:px-4 py-3 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50 min-h-[48px]"
-                  />
-                </div>
-
-                {/* Spark Address Input */}
-                <div className="space-y-2">
-                  <label className="text-emerald-400/80 font-mono text-xs">
-                    <span className="opacity-60">&gt;</span> spark address:
-                  </label>
-                  <input
-                    type="text"
-                    value={wallet}
-                    onChange={(e) => setWallet(e.target.value)}
-                    placeholder="spark1p..."
-                    disabled={loading}
-                    className="w-full bg-black/40 border border-emerald-500/30 rounded px-3 sm:px-4 py-3 text-emerald-400 font-mono text-[11px] sm:text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50 min-h-[48px] truncate"
-                  />
-                </div>
-
-                {/* Follow Requirement */}
-                <div className="space-y-3 border-t border-emerald-500/20 pt-3">
-                  {/* Follow Button */}
-                  <a
-                    href="https://twitter.com/intent/follow?screen_name=OrdVibeHQ"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 bg-black/40 border border-cyan-500/30 hover:border-cyan-500 text-cyan-400 font-mono py-3 px-4 rounded transition-all min-h-[48px] text-sm"
-                  >
-                    <span>→</span> follow @OrdVibeHQ
-                  </a>
-
-                  {/* Confirmation Checkbox */}
-                  <label className="flex items-center gap-3 cursor-pointer group">
+                  {/* Twitter Handle Input */}
+                  <div className="space-y-2">
+                    <label className="text-emerald-400/80 font-mono text-xs">
+                      <span className="opacity-60">&gt;</span> X handle:
+                    </label>
                     <input
-                      type="checkbox"
-                      checked={confirmedFollow}
-                      onChange={(e) => setConfirmedFollow(e.target.checked)}
+                      type="text"
+                      value={twitter}
+                      onChange={(e) => setTwitter(e.target.value)}
+                      placeholder="@handle"
                       disabled={loading}
-                      className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                      className="w-full bg-black/40 border border-emerald-500/30 rounded px-3 sm:px-4 py-3 text-emerald-400 font-mono text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50 min-h-[48px]"
                     />
-                    <span className="text-emerald-400/80 font-mono text-xs group-hover:text-emerald-400 transition-colors">
-                      I follow @OrdVibeHQ
-                    </span>
-                  </label>
-                </div>
+                  </div>
 
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={loading || !confirmedFollow}
-                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-black font-mono font-bold py-3 sm:py-4 px-6 rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] text-sm sm:text-base"
-                >
-                  {loading ? "processing..." : "initialize reaction"}
-                </button>
+                  {/* Spark Address Input */}
+                  <div className="space-y-2">
+                    <label className="text-emerald-400/80 font-mono text-xs">
+                      <span className="opacity-60">&gt;</span> spark address:
+                    </label>
+                    <input
+                      type="text"
+                      value={wallet}
+                      onChange={(e) => setWallet(e.target.value)}
+                      placeholder="spark1p..."
+                      disabled={loading}
+                      className="w-full bg-black/40 border border-emerald-500/30 rounded px-3 sm:px-4 py-3 text-emerald-400 font-mono text-[11px] sm:text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-50 min-h-[48px] truncate"
+                    />
+                  </div>
 
-                {/* Social Links */}
-                <div className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-xs border-t border-emerald-500/20">
-                  <p className="text-emerald-400/60 font-mono">follow for updates:</p>
-                  <a
-                    href="https://twitter.com/OrdVibeHQ"
-                    className="text-cyan-400 hover:text-cyan-300 transition-colors hover:glow-text"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  {/* Follow Requirement */}
+                  <div className="space-y-3 border-t border-emerald-500/20 pt-3">
+                    {/* Follow Button */}
+                    <a
+                      href="https://twitter.com/intent/follow?screen_name=OrdVibeHQ"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 bg-black/40 border border-cyan-500/30 hover:border-cyan-500 text-cyan-400 font-mono py-3 px-4 rounded transition-all min-h-[48px] text-sm"
+                    >
+                      <span>→</span> follow @OrdVibeHQ
+                    </a>
+
+                    {/* Confirmation Checkbox */}
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={confirmedFollow}
+                        onChange={(e) => setConfirmedFollow(e.target.checked)}
+                        disabled={loading}
+                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                      />
+                      <span className="text-emerald-400/80 font-mono text-xs group-hover:text-emerald-400 transition-colors">
+                        I follow @OrdVibeHQ
+                      </span>
+                    </label>
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={loading || !confirmedFollow}
+                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-black font-mono font-bold py-3 sm:py-4 px-6 rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] text-sm sm:text-base"
                   >
-                    @OrdVibeHQ
-                  </a>
+                    {loading ? "processing..." : "initialize reaction"}
+                  </button>
+
+                  {/* Social Links */}
+                  <div className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-xs border-t border-emerald-500/20">
+                    <p className="text-emerald-400/60 font-mono">follow for updates:</p>
+                    <a
+                      href="https://twitter.com/OrdVibeHQ"
+                      className="text-cyan-400 hover:text-cyan-300 transition-colors hover:glow-text"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      @OrdVibeHQ
+                    </a>
+                  </div>
+                </div>
+              </form>
+            ) : (
+              /* === WHITELIST CLOSED - Show Loading State === */
+              <div className="alkanes-form-container relative data-stream">
+                <div className="alkanes-form-glow" />
+                <div className="alkanes-form-content py-6 sm:py-8 px-4 sm:px-6 text-center space-y-4">
+                  {/* Status */}
+                  <p className="text-emerald-400 font-mono text-xs sm:text-sm terminal-prompt">
+                    <span className="opacity-60">&gt;</span> whitelist: <span className="text-yellow-400">loading...</span><span className="blink-cursor"></span>
+                  </p>
+
+                  {/* Message */}
+                  <p className="text-emerald-400/60 font-mono text-xs">
+                    calibrating entry protocol
+                  </p>
+
+                  {/* Social Links */}
+                  <div className="pt-4 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-xs border-t border-emerald-500/20">
+                    <p className="text-emerald-400/60 font-mono">follow for updates:</p>
+                    <a
+                      href="https://twitter.com/OrdVibeHQ"
+                      className="text-cyan-400 hover:text-cyan-300 transition-colors hover:glow-text"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      @OrdVibeHQ
+                    </a>
+                  </div>
                 </div>
               </div>
-            </form>
+            )}
           </div>
 
           {/* Terminal Button Styles */}
