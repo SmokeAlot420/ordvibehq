@@ -670,12 +670,15 @@ export interface TopMover {
 
 /**
  * Get top gainers and losers
+ * Uses SDK to bypass Cloudflare blocking
  */
 export async function getTopMovers(limit: number = 5): Promise<{
   gainers: TopMover[];
   losers: TopMover[];
 }> {
-  const pools = await fetchPools({ sort: "VOLUME24H_DESC", limit: 50 });
+  // Import SDK dynamically to avoid circular dependency
+  const { flashnetSDK } = await import("./flashnet-sdk");
+  const pools = await flashnetSDK.fetchPools({ limit: 50 });
 
   const sorted = [...pools].sort((a, b) => b.priceChange24h - a.priceChange24h);
 

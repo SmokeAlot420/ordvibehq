@@ -1,4 +1,3 @@
-import { useLatestTransactions } from "@/hooks/useSparkscan";
 import { usePools, useTopMovers } from "@/hooks/useFlashnet";
 import { formatUsd, formatPercentage } from "@/lib/flashnet";
 
@@ -6,9 +5,14 @@ import { formatUsd, formatPercentage } from "@/lib/flashnet";
  * OverviewView - Dashboard home with system stats
  */
 export default function OverviewView() {
-  const { data: transactions, isLoading: loadingTx } = useLatestTransactions({ limit: 5 });
   const { data: pools, isLoading: loadingPools } = usePools();
   const { data: movers, isLoading: loadingMovers } = useTopMovers(3);
+
+  // Get top pools by volume (sorted descending)
+  const topVolumePools = pools
+    ?.slice()
+    .sort((a, b) => b.volume24h - a.volume24h)
+    .slice(0, 5);
 
   return (
     <div className="overview-view">
@@ -90,29 +94,32 @@ export default function OverviewView() {
           </div>
         </div>
 
-        {/* Recent Transactions */}
+        {/* Hot Pools by Volume */}
         <div className="panel">
           <div className="panel-header">
             <span className="panel-icon">◇</span>
-            <span className="panel-title">RECENT_TX</span>
+            <span className="panel-title">HOT_POOLS</span>
           </div>
           <div className="panel-content">
-            {loadingTx ? (
+            {loadingPools ? (
               <div className="loading-state">Loading...</div>
-            ) : transactions?.length ? (
+            ) : topVolumePools?.length ? (
               <div className="tx-list">
-                {transactions.map((tx) => (
-                  <div key={tx.id} className="tx-item">
-                    <div className="tx-type">{tx.type.replace(/_/g, " ")}</div>
+                {topVolumePools.map((pool, i) => (
+                  <div key={pool.poolId} className="tx-item">
+                    <div className="tx-type">
+                      <span className="mover-rank">#{i + 1}</span>
+                      {pool.assetA.ticker}/{pool.assetB.ticker}
+                    </div>
                     <div className="tx-meta">
-                      <span className={`tx-status ${tx.status}`}>{tx.status}</span>
-                      <span className="tx-value">{formatUsd(tx.valueUsd)}</span>
+                      <span className="tx-status confirmed">24h Vol</span>
+                      <span className="tx-value">{formatUsd(pool.volume24h)}</span>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="empty-state">No recent transactions</div>
+              <div className="empty-state">No pool data</div>
             )}
           </div>
         </div>
