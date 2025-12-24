@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import AnimatedTestTube from "@/components/AnimatedTestTube";
 import AppleBackground from "@/components/AppleBackground";
 import BioTerminal from "@/components/BioTerminal";
@@ -343,19 +344,17 @@ const Index = () => {
           `}</style>
         </div>
 
-        {/* ENTER TERMINAL Button - Outside premium-glass for spacing */}
+        {/* ENTER TERMINAL Button - Links to dashboard */}
         <div className="mt-6 sm:mt-8 animate-fade-in animate-delay-3">
-          <button
-            onClick={() => {
-              showModal("not yet", "dashboard coming soon...", "info");
-            }}
+          <Link
+            to="/dashboard"
             className="enter-terminal-btn group cursor-pointer"
           >
             <span className="btn-bracket">[</span>
             <span className="btn-text">ENTER_TERMINAL</span>
             <span className="btn-bracket">]</span>
             <span className="btn-arrow group-hover:translate-x-1 transition-transform">→</span>
-          </button>
+          </Link>
         </div>
       </div>
 

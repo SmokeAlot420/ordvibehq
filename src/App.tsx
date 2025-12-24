@@ -7,15 +7,14 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
-// Dashboard components - disabled for Phase 1 (whitelist only)
-// Uncomment for Phase 2: Full dashboard launch
-// import {
-//   DashboardLayout,
-//   OverviewView,
-//   HoldersView,
-//   TradingView,
-//   SwapView,
-// } from "./components/dashboard";
+// Dashboard components - Phase 2: Full dashboard launch
+import {
+  DashboardLayout,
+  OverviewView,
+  HoldersView,
+  TradingView,
+  SwapView,
+} from "./components/dashboard";
 
 // Configure QueryClient with optimized defaults
 const queryClient = new QueryClient({
@@ -35,30 +34,29 @@ const router = createBrowserRouter([
     path: "/",
     element: <Index />,
   },
-  // Dashboard routes - disabled for Phase 1 (whitelist only)
-  // Uncomment for Phase 2: Full dashboard launch
-  // {
-  //   path: "/dashboard",
-  //   element: <DashboardLayout />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <OverviewView />,
-  //     },
-  //     {
-  //       path: "holders",
-  //       element: <HoldersView />,
-  //     },
-  //     {
-  //       path: "trading",
-  //       element: <TradingView />,
-  //     },
-  //     {
-  //       path: "swap",
-  //       element: <SwapView />,
-  //     },
-  //   ],
-  // },
+  // Dashboard routes - Phase 2: Full dashboard launch
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <OverviewView />,
+      },
+      {
+        path: "holders",
+        element: <HoldersView />,
+      },
+      {
+        path: "trading",
+        element: <TradingView />,
+      },
+      {
+        path: "swap",
+        element: <SwapView />,
+      },
+    ],
+  },
   {
     path: "*",
     element: <NotFound />,

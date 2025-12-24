@@ -18,7 +18,7 @@ Follow the rules in `.claude/archon_rules.md` for the mandatory task-driven deve
 
 **BitPlex Dashboard** - Full-featured Spark L2 DEX dashboard with real-time trading data.
 
-**Current Status**: Phase 1 - Whitelist landing page (dashboard disabled until Phase 2).
+**Current Status**: Phase 2 - Full dashboard enabled with real-time Flashnet data.
 
 **Phase 1 Features (Current):**
 - **Whitelist Form**: Collects X handle + Spark address (toggle-controlled)
@@ -84,11 +84,11 @@ const WHITELIST_OPEN = false; // Set to `true` to open whitelist
 
 ### Route Structure
 ```
-/                    → Whitelist landing page (Phase 1)
-/dashboard           → (Disabled until Phase 2)
-/dashboard/holders   → (Disabled until Phase 2)
-/dashboard/trading   → (Disabled until Phase 2)
-/dashboard/swap      → (Disabled until Phase 2)
+/                    → Whitelist landing page
+/dashboard           → Dashboard overview (Phase 2 ACTIVE)
+/dashboard/holders   → Holder analytics
+/dashboard/trading   → Trading terminal
+/dashboard/swap      → SparkSwap interface
 ```
 
 ### Key Files
